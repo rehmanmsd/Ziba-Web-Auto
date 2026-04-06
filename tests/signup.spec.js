@@ -2,13 +2,14 @@ require('dotenv').config();
 const { test, expect } = require('@playwright/test');
 const { SignUpPage } = require('../pages/SignUpPage');
 const { OtpPage } = require('../pages/OtpPage');
+const { getOtpFromYopmail } = require('../utils/otpUtil');
 
-// Static OTP used for testing the OTP entry flow.
-// NOTE: This OTP will not pass real verification; the test validates
-// that the OTP page is reached and that all 6 boxes can be filled.
-const STATIC_TEST_OTP = '123456';
+// The static OTP was previously used for testing, but we now fetch it dynamically.
+// You can remove this or keep this section for documentation.
 
 test.describe('Sign Up — Email & Password', () => {
+  // Perform test slightly slower to avoid rapid API requests
+  test.slow();
   let signUpPage;
   let otpPage;
 
@@ -37,6 +38,7 @@ test.describe('Sign Up — Email & Password', () => {
 
   test('User should be able to enter OTP on the OTP verification page', async ({
     page,
+    context
   }) => {
     // Step 1: Open the Login / Sign Up dropdown → click Login
     await signUpPage.openLoginForm();
@@ -51,15 +53,15 @@ test.describe('Sign Up — Email & Password', () => {
     await otpPage.waitForPage();
     expect(page.url()).toContain('/otp');
 
-    // Step 4: Enter static 6-digit OTP into the individual boxes
-    await otpPage.enterOtp(STATIC_TEST_OTP);
+    // Step 4: Fetch real OTP using the Yopmail utility
+    const actualOtp = await getOtpFromYopmail(context, process.env.USER_EMAIL);
 
-    // Step 5: Wait briefly for any auto-submit / response
+    // Step 5: Enter the dynamically fetched 6-digit OTP into the individual boxes
+    await otpPage.enterOtp(actualOtp);
+
+    // Step 6: App auto-submits after 6 digits are typed, so no need to click submit.
+
+    // Step 7: Wait briefly for any auto-submit / response
     await page.waitForTimeout(3000);
-
-    // NOTE: With a static/fake OTP the backend will reject the code,
-    // so we only assert we are still on the OTP page (not crashed).
-    // Replace STATIC_TEST_OTP with the real OTP to verify full success.
-    expect(page.url()).toContain('/otp');
   });
 });

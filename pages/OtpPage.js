@@ -5,6 +5,9 @@ class OtpPage {
     // 6 individual OTP digit input boxes (class="v-box")
     this.otpBoxes = page.locator("//input[@class='v-box']");
 
+    // Submit / Verify button on the OTP page
+    this.submitButton = page.locator("//button[contains(text(),'Verify') or contains(text(),'Submit') or contains(text(),'Confirm')]");
+
     // Resend link
     this.resendLink = page.locator("//span[text()='Resend']");
 
@@ -26,13 +29,19 @@ class OtpPage {
    * @param {string} code - 6-character OTP string, e.g. '123456'
    */
   async enterOtp(code) {
-    const digits = code.toString().split('');
-    const boxes = this.otpBoxes;
+    // Focus the first OTP box
+    await this.otpBoxes.first().click();
+    
+    // Type the entire code sequentially as a user would on the keyboard.
+    // This allows the app's auto-advance logic to handle the focus properly.
+    await this.page.keyboard.type(code.toString(), { delay: 100 });
+  }
 
-    for (let i = 0; i < digits.length; i++) {
-      await boxes.nth(i).click();
-      await boxes.nth(i).fill(digits[i]);
-    }
+  /**
+   * Click the submit/verify button on the OTP page.
+   */
+  async submitOtp() {
+    await this.submitButton.click();
   }
 
   /**
