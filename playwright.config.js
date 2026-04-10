@@ -6,7 +6,7 @@ module.exports = defineConfig({
   timeout: 30000,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 1, // keeping 1 retry locally as we had it before
+  retries: process.env.CI ? 2 : 0, // no retries locally — test runs exactly once
   workers: process.env.CI ? 1 : undefined,
   reporter: [['html', { open: 'never' }]],
 
