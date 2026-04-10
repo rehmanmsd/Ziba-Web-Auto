@@ -65,3 +65,4 @@ test.describe('Sign Up — Email & Password', () => {
     await page.waitForTimeout(3000);
   });
 });
+//test AR
