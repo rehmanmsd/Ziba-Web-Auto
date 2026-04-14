@@ -1,58 +1,53 @@
 require('dotenv').config();
 const path = require('path');
 const { test } = require('@playwright/test');
-const { AgentSignUpPage } = require('../pages/AgentSignUpPage');
-const { AgentRolePage }   = require('../pages/AgentRolePage');
+const { BusinessSignUpPage } = require('../pages/BusinessSignUpPage');
+const { BusinessRolePage }   = require('../pages/BusinessRolePage');
 
-const agentEmail = `agent_${Date.now()}@yopmail.com`;
+const businessEmail = `business_${Date.now()}@yopmail.com`;
 const ROLE_ADDRESS = 'vogue Tower';
 
-test.describe('Agent — Sign Up + Role Creation', () => {
+test.describe('Business & Service — Sign Up + Role Creation', () => {
   test.describe.configure({ timeout: 180_000 });
 
   let signUpPage;
   let rolePage;
 
   test.beforeEach(async ({ page }) => {
-    signUpPage = new AgentSignUpPage(page);
+    signUpPage = new BusinessSignUpPage(page);
     await signUpPage.navigate();
   });
 
-  test('Agent signs up, verifies email, and completes role creation', async ({ context }) => {
+  test('Business signs up, verifies email, and completes role creation', async ({ context }) => {
 
     // ── 1. Sign Up ────────────────────────────────────────────────────────────
-    console.log(`Signing up as: ${agentEmail}`);
-    await signUpPage.selectRealEstateAgentRole();
-    await signUpPage.fillAgentForm('Test Agent', agentEmail, '12345678');
+    console.log(`Signing up as: ${businessEmail}`);
+    await signUpPage.selectBusinessAndServiceRole();
+    await signUpPage.fillSignUpForm('Test Business', businessEmail, '12345678');
     await signUpPage.clickCaptcha();
     await signUpPage.submit();
     await signUpPage.waitForSignupSuccess();
 
     // ── 2. Email Verification ─────────────────────────────────────────────────
     console.log('Verifying email via Yopmail…');
-    const verifiedPage = await verifyEmailViaYopmail(context, agentEmail);
+    const verifiedPage = await verifyEmailViaYopmail(context, businessEmail);
     await verifiedPage.bringToFront();
 
     // ── 3. Role Creation ──────────────────────────────────────────────────────
     console.log('Filling role creation form…');
-    rolePage = new AgentRolePage(verifiedPage);
+    rolePage = new BusinessRolePage(verifiedPage);
     await rolePage.validateNavigation();
 
     await rolePage.fillAndSubmit({
-      companyName:     'Ziba Properties Sdn Bhd',
-      companyRegNo:    'VE 3 0170',
-      companyEmail:    'agent@zibaproperties.com',
-      agentRegNo:      'REN 12345',
-      phone:           '0123 4567890',
-      website:         'https://zibaproperties.com',
-      imagePath:       path.resolve(__dirname, '..', 'test-data', 'profile_image.png'),
-      companyAddress:  ROLE_ADDRESS,
-      coveredLocation: 'Lahore, Pakistan',
+      businessName: 'Ziba Services Sdn Bhd',
+      category:     'Beauty',
+      imagePath:    path.resolve(__dirname, '..', 'test-data', 'profile_image.png'),
+      address:      ROLE_ADDRESS,
     });
 
     // ── 4. Verify Dashboard ───────────────────────────────────────────────────
     await rolePage.verifySubmissionSuccess();
-    console.log('✅ Full agent flow complete!');
+    console.log('✅ Full business flow complete!');
   });
 });
 

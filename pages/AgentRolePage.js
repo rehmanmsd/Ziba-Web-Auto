@@ -18,6 +18,7 @@ class AgentRolePage {
     this.companyLogo      = page.locator(LOCATORS.agentReqCompanyLogoUpload);
     // Company Address — Google Maps autocomplete (no placeholder; found by label context)
     this.companyAddress   = page.locator(LOCATORS.agentReqAddressSearch).first();
+    this.addressSaveBtn   = page.locator(LOCATORS.agentReqAddressSaveBtn);
     this.coveredLocation  = page.locator(LOCATORS.agentReqCoveredLocation);
     this.imageTickBtn     = page.locator(LOCATORS.agentReqImageTickBtn).first();
     this.submitBtn        = page.locator(LOCATORS.agentReqSubmitBtn);
@@ -41,18 +42,13 @@ class AgentRolePage {
     if (phone) await this.phone.fill(phone);
     await this.website.fill(website);
 
-    // Company Address (Google Maps autocomplete)
+    // Company Address — use a fixed address and save it
     if (companyAddress) {
       await this.companyAddress.click();
-      await this.companyAddress.pressSequentially(companyAddress, { delay: 80 });
-      try {
-        const suggestion = this.page.locator('.pac-item').first();
-        await suggestion.waitFor({ state: 'visible', timeout: 8000 });
-        await suggestion.click();
-        console.log('  → Company address selected from autocomplete.');
-      } catch {
-        console.log('  → No autocomplete suggestion, keeping typed value.');
-      }
+      await this.companyAddress.fill(companyAddress);
+      await this.addressSaveBtn.waitFor({ state: 'visible', timeout: 8000 });
+      await this.addressSaveBtn.click();
+      console.log('  → Company address filled and saved.');
     }
 
     // Profile image upload

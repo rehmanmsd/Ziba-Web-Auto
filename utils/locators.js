@@ -41,6 +41,16 @@ const LOCATORS = {
 
   // Post-Login Navigation
   agentContinueBtn: '//*[@id="loggedin-container"]/div[1]/div/div/span[2]/a',
+
+  // Business & Service — Vendor Role Form (after verification)
+  bsBusinessName: '//*[@id="mainFormVue"]/div/div[2]/span/form/div[1]/div/div[1]/span/div/input',
+  bsCategoryInput: '//*[@id="vs1__combobox"]/div[1]/input',
+  bsImageUploadTrigger: '//*[@id="all-vacancy-uploaders"]/div[1]/div[1]/div[2]/div/div/div/p[1]/span',
+  bsCountryDropdown: '//*[@id="mainFormVue"]/div/div[2]/span/form/div[1]/div/div[11]/div/div[1]/div[1]/div/span[1]/span/span[1]/span',
+  bsAddressInput: '//*[@id="mainFormVue"]/div/div[2]/span/form/div[1]/div/div[11]/div/div[1]/div[1]/div/span[2]/div/input',
+  bsAddressSuggestion: '//*[@id="mainFormVue"]/div/div[2]/span/form/div[1]/div/div[11]/div/div[1]/div[1]/div/span[2]/div/ul/li[4]',
+  bsAddressSaveBtn: '//*[@id="mainFormVue"]/div/div[2]/span/form/div[1]/div/div[11]/div/div[1]/div[1]/div/span[2]/div/div/div/span[2]',
+  bsSubmitBtn: '//*[@id="mainFormVue"]/div/div[2]/span/form/div[2]/div/div/div/button[2]',
 };
 
 module.exports = { LOCATORS };
