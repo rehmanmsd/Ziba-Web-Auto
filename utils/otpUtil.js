@@ -73,4 +73,89 @@ async function getOtpFromYopmail(context, emailUsername) {
   }
 }
 
-module.exports = { getOtpFromYopmail };
+/**
+ * Open a Yopmail inbox and click the password-reset link contained in
+ * the latest email.  Returns the new Playwright page that opens after
+ * the link is clicked (the external reset-password form page).
+ *
+ * The function intentionally mirrors the Yopmail verification helper used
+ * in agentSignup.spec.js so the polling/retry strategy is consistent.
+ *
+ * @param {import('@playwright/test').BrowserContext} context   - Playwright browser context.
+ * @param {string}                                   email      - Full Yopmail address, e.g. ar0@yopmail.com
+ * @returns {Promise<import('@playwright/test').Page>}           The reset-password page, ready to interact with.
+ */
+async function getResetPasswordLinkFromYopmail(context, email) {
+  // Derive the inbox username from the full address
+  const username = email.includes('@') ? email.split('@')[0] : email;
+
+  // Open a fresh page for the Yopmail session (separate from the test page)
+  const yopPage = await context.newPage();
+
+  try {
+    // Navigate to Yopmail and open the inbox
+    await yopPage.goto('https://yopmail.com/en/', { waitUntil: 'domcontentloaded' });
+
+    const loginInput = yopPage.locator('#login');
+    await loginInput.waitFor({ state: 'visible' });
+    await loginInput.fill(username);
+    await loginInput.press('Enter');
+
+    // Allow inbox to fully load before first poll attempt
+    await yopPage.waitForLoadState('domcontentloaded');
+    await yopPage.waitForTimeout(3000);
+
+    // Yopmail renders email content inside the #ifmail iframe
+    const mailFrame = yopPage.frameLocator('#ifmail');
+
+    let resetPage = null;
+    // Poll up to 8 times (each attempt waits ~5 s) to handle delayed delivery
+    let retries = 8;
+
+    while (retries > 0 && !resetPage) {
+      // Refresh the inbox before each attempt to pick up newly delivered mail
+      const refreshBtn = yopPage.locator('#refresh');
+      if (await refreshBtn.isVisible()) {
+        await refreshBtn.click();
+        console.log(`  → Yopmail inbox refreshed (${retries} attempt(s) left)…`);
+      }
+
+      // Look for a link or button containing "reset" (case-insensitive)
+      const resetLink = mailFrame.locator('a', { hasText: /reset/i }).first();
+
+      try {
+        if (await resetLink.isVisible({ timeout: 5000 })) {
+          console.log('  → Reset password link found — clicking…');
+
+          // Clicking the link opens the reset form in a new browser tab
+          const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            resetLink.click(),
+          ]);
+
+          await newPage.waitForLoadState('domcontentloaded');
+          resetPage = newPage;
+        } else {
+          // Email not yet delivered — wait before retrying
+          await yopPage.waitForTimeout(5000);
+        }
+      } catch {
+        // Frame/element not ready yet — retry on next iteration
+        await yopPage.waitForTimeout(5000);
+      }
+
+      retries--;
+    }
+
+    if (!resetPage) {
+      throw new Error(`Password-reset email not found in Yopmail inbox for: ${email}`);
+    }
+
+    return resetPage;
+  } finally {
+    // Always close the Yopmail tab to avoid context leaks
+    await yopPage.close();
+  }
+}
+
+module.exports = { getOtpFromYopmail, getResetPasswordLinkFromYopmail };

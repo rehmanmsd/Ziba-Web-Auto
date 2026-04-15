@@ -46,7 +46,39 @@ const LOCATORS = {
   // Post-Login Navigation
   agentContinueBtn: '//*[@id="loggedin-container"]/div[1]/div/div/span[2]/a',
 
+  // ─────────────────────────────────────────────────────────────────────────
+  // Forgot / Reset Password Flow
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // "Forgot password?" link on the /login auth form (switches form to reset mode)
+  forgotPasswordLink: '//*[@id="authForm"]/div/form/div[3]/span',
+
+  // Email input on the "Forgot Password" form (same #authForm, same field)
+  forgotPasswordEmailInput: '//*[@id="authForm"]/div/form/div[1]/div/input',
+
+  // "Send Reset Email" submit button on the Forgot Password form
+  sendResetEmailBtn: '//*[@id="authForm"]/div/form/button',
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Reset Password Page (external password-reset form)
+  // Route: /reset-password  (opened via link in Yopmail)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // Email field on the external reset-password page
+  resetPasswordEmailInput: '//*[@id="email"]',
+
+  // New password field
+  resetPasswordNewPassword: '//*[@id="password"]',
+
+  // Confirm new password field
+  resetPasswordConfirm: '//*[@id="password-confirm"]',
+
+  // "Reset Password" submit button
+  resetPasswordSubmitBtn: '//*[@id="div75"]/div[2]/form/div[5]/div[2]',
+
+  // ─────────────────────────────────────────────────────────────────────────
   // Business & Service — Vendor Role Form (after verification)
+  // ─────────────────────────────────────────────────────────────────────────
   bsBusinessName: '//*[@id="mainFormVue"]/div/div[2]/span/form/div[1]/div/div[1]/span/div/input',
   bsCategoryInput: '//*[@id="vs1__combobox"]/div[1]/input',
   bsImageUploadTrigger: '//*[@id="all-vacancy-uploaders"]/div[1]/div[1]/div[2]/div/div/div/p[1]/span',
