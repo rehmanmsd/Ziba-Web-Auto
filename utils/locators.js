@@ -76,6 +76,15 @@ const LOCATORS = {
   // "Reset Password" submit button
   resetPasswordSubmitBtn: '//*[@id="div75"]/div[2]/form/div[5]/div[2]',
 
+  // Validation error shown under the email field when the reset token is
+  // expired or already used — text-based selector is intentional so it
+  // matches regardless of the wrapping element tag.
+  resetPasswordInvalidTokenError: 'text=This password reset token is invalid.',
+
+  // Error shown on the Forgot Password form when the submitted email is not
+  // associated with any account in the system.
+  forgotPasswordUnregisteredEmailError: 'text=We can\'t find a user with that email address.',
+
   // ─────────────────────────────────────────────────────────────────────────
   // Business & Service — Vendor Role Form (after verification)
   // ─────────────────────────────────────────────────────────────────────────

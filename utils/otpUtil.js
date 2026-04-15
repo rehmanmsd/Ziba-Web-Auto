@@ -158,4 +158,77 @@ async function getResetPasswordLinkFromYopmail(context, email) {
   }
 }
 
-module.exports = { getOtpFromYopmail, getResetPasswordLinkFromYopmail };
+/**
+ * Open a Yopmail inbox, locate the latest reset-password email, and return
+ * the href of the reset link WITHOUT clicking it.
+ *
+ * Use this when you need to capture a token URL before it gets invalidated
+ * by a subsequent reset request (e.g. expired-token test).
+ *
+ * @param {import('@playwright/test').BrowserContext} context - Playwright browser context.
+ * @param {string}                                   email   - Full Yopmail address.
+ * @returns {Promise<string>}                                  The full href URL of the reset link.
+ */
+async function getResetPasswordHrefFromYopmail(context, email) {
+  const username = email.includes('@') ? email.split('@')[0] : email;
+
+  // Open a dedicated Yopmail tab — closing it in the finally block
+  const yopPage = await context.newPage();
+
+  try {
+    await yopPage.goto('https://yopmail.com/en/', { waitUntil: 'domcontentloaded' });
+
+    const loginInput = yopPage.locator('#login');
+    await loginInput.waitFor({ state: 'visible' });
+    await loginInput.fill(username);
+    await loginInput.press('Enter');
+
+    await yopPage.waitForLoadState('domcontentloaded');
+    // Allow inbox to load after login
+    await yopPage.waitForTimeout(3000);
+
+    // Email content is inside Yopmail's #ifmail iframe
+    const mailFrame = yopPage.frameLocator('#ifmail');
+
+    let href = null;
+    // Poll up to 8 times (~5 s each) to handle email delivery delays
+    let retries = 8;
+
+    while (retries > 0 && !href) {
+      // Refresh inbox to pick up newly delivered mail
+      const refreshBtn = yopPage.locator('#refresh');
+      if (await refreshBtn.isVisible()) {
+        await refreshBtn.click();
+        console.log(`  → Yopmail refreshed — extracting href (${retries} attempt(s) left)…`);
+      }
+
+      await yopPage.waitForTimeout(3000);
+
+      try {
+        const resetLink = mailFrame.locator('a', { hasText: /reset/i }).first();
+        if (await resetLink.isVisible({ timeout: 5000 })) {
+          // Extract the href attribute — do NOT click so the token stays unused
+          href = await resetLink.getAttribute('href');
+          if (href) {
+            console.log(`  → Reset link href captured: ${href}`);
+          }
+        }
+      } catch {
+        // iframe or link not ready yet — retry
+      }
+
+      retries--;
+    }
+
+    if (!href) {
+      throw new Error(`Could not extract reset link href from Yopmail for: ${email}`);
+    }
+
+    return href;
+  } finally {
+    // Always close the Yopmail tab to avoid context leaks
+    await yopPage.close();
+  }
+}
+
+module.exports = { getOtpFromYopmail, getResetPasswordLinkFromYopmail, getResetPasswordHrefFromYopmail };
