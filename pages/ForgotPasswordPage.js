@@ -108,7 +108,9 @@ class ForgotPasswordPage {
   async waitForCheckEmailPage(email) {
     // Wait for any /checkemail navigation first — the app does NOT encode the @
     // in the query param, so using a regex avoids encoding mismatches.
-    await this.page.waitForURL(/\/checkemail/, { timeout: 15000 });
+    // Use domcontentloaded because the /checkemail page does not always fire the
+    // full 'load' event within a reasonable time (background API calls keep it open).
+    await this.page.waitForURL(/\/checkemail/, { timeout: 20000, waitUntil: 'domcontentloaded' });
     console.log(`  → Arrived at check-email page: ${this.page.url()}`);
   }
 
@@ -145,8 +147,9 @@ class ForgotPasswordPage {
     await this.resetPasswordSubmitBtn.click();
     console.log('  → "Reset Password" button clicked.');
 
-    // After a successful reset the app redirects back to /login
-    await this.page.waitForURL('**/login', { timeout: 15000 });
+    // After a successful reset the app redirects back to /login.
+    // Using a generous timeout because the server round-trip can be slow.
+    await this.page.waitForURL('**/login', { timeout: 30000 });
     console.log('  → Redirected to /login after password reset.');
   }
 

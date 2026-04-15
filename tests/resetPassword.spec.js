@@ -30,8 +30,10 @@ const RESET_EMAIL   = process.env.RESET_EMAIL   || 'ar0@yopmail.com';
 const NEW_PASSWORD  = process.env.NEW_PASSWORD  || 'NewPass@123';
 
 test.describe('Forgot Password — Full Reset Flow', () => {
-  // Allow extra time for Yopmail polling + two page navigations
-  test.describe.configure({ timeout: 180_000 });
+  // Run tests serially: all three tests share the ar0@yopmail.com inbox, so
+  // running them in parallel would cause token/email race conditions.
+  // Timeout is generous to accommodate Yopmail polling + redirect latency.
+  test.describe.configure({ mode: 'serial', timeout: 180_000 });
 
   let forgotPage;
   let loginPage;
