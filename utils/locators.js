@@ -86,6 +86,42 @@ const LOCATORS = {
   forgotPasswordUnregisteredEmailError: 'text=We can\'t find a user with that email address.',
 
   // ─────────────────────────────────────────────────────────────────────────
+  // Change Password Flow  (logged-in user → Profile → Change Password)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // Profile avatar button in the top-right header — opens the user sidebar
+  profileAvatar: '//*[@id="profile-avatar"]',
+
+  // "My Profile" link inside the sidebar panel
+  myProfileLink: '//*[@id="sidebardata"]/div/ul/div[2]/div[1]/div/ul/a[1]/li',
+
+  // "Change Password" tab on the Profile page
+  changePasswordTab: '//*[@id="profileVue"]/div[1]/div[2]/div/ul/li[6]/a',
+
+  // Current (old) password input on the Change Password form
+  cpOldPassword: '//*[@id="password-form"]/span[1]/div/input',
+
+  // New password input
+  cpNewPassword: '//*[@id="password-form"]/span[2]/div/input',
+
+  // Confirm new password input — must match cpNewPassword
+  cpConfirmPassword: '//*[@id="password-form"]/span[3]/div/input',
+
+  // "Change Password" submit button
+  cpSubmitBtn: '//*[@id="password-form"]/button',
+
+  // Success notification shown after a successful password change.
+  // Text-based selector matches the app's toast/alert regardless of wrapper tag.
+  cpSuccessMessage: 'text=Password changed successfully',
+
+  // Error shown when the entered old password does not match the stored password
+  cpIncorrectOldPasswordError: 'text=Please Enter Correct Old Password',
+
+  // Validation message shown when the new password is the same as the old one.
+  // Update the text if the app message changes.
+  cpSamePasswordError: '//*[@id="password-form"]//span[contains(@class,"error") or contains(@class,"invalid") or contains(@class,"help")]',
+
+  // ─────────────────────────────────────────────────────────────────────────
   // Business & Service — Vendor Role Form (after verification)
   // ─────────────────────────────────────────────────────────────────────────
   bsBusinessName: '//*[@id="mainFormVue"]/div/div[2]/span/form/div[1]/div/div[1]/span/div/input',
