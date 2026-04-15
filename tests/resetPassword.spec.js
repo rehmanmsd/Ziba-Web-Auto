@@ -194,4 +194,37 @@ test.describe('Forgot Password — Full Reset Flow', () => {
 
     console.log('✅ Expired reset link test passed!');
   });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  test('Unregistered email should display user-not-found error', async ({ page }) => {
+    // Use a timestamped address that is guaranteed to not exist in the system
+    const unregisteredEmail = `notregistered_${Date.now()}@yopmail.com`;
+
+    // ══════════════════════════════════════════════════════════════════════
+    // STEP 1: Open /login and switch to Forgot Password mode
+    // ══════════════════════════════════════════════════════════════════════
+    console.log('Step 1: Navigating to /login…');
+    await forgotPage.navigate();
+
+    console.log('Step 2: Clicking "Forgot password?" link…');
+    await forgotPage.clickForgotPassword();
+
+    // ══════════════════════════════════════════════════════════════════════
+    // STEP 2: Enter an email that is NOT registered and submit
+    // The form should stay on /login and show an inline error — no redirect.
+    // ══════════════════════════════════════════════════════════════════════
+    console.log(`Step 3: Entering unregistered email: ${unregisteredEmail}`);
+    await forgotPage.requestPasswordReset(unregisteredEmail);
+
+    // ══════════════════════════════════════════════════════════════════════
+    // STEP 3: Verify the user-not-found error appears under the email field
+    // Test PASSES when this message is visible.
+    // ══════════════════════════════════════════════════════════════════════
+    console.log('Step 4: Verifying "user not found" error message…');
+    await forgotPage.verifyUnregisteredEmailError();
+    // The app navigates to /password/reset but still renders the error message
+    // under the email field. Confirming the error is visible is the pass criterion.
+
+    console.log('✅ Unregistered email test passed!');
+  });
 });

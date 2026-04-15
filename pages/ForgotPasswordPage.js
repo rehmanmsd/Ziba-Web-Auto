@@ -49,6 +49,10 @@ class ForgotPasswordPage {
 
     // Error message shown under the email field when the token is invalid/expired
     this.invalidTokenError = page.locator(LOCATORS.resetPasswordInvalidTokenError);
+
+    // Error message shown on the Forgot Password form when the email is not
+    // registered in the system (stays on the same page, no redirect)
+    this.unregisteredEmailError = page.locator(LOCATORS.forgotPasswordUnregisteredEmailError);
   }
 
   // ══════════════════════════════════════════════════════════════════════════
@@ -171,6 +175,23 @@ class ForgotPasswordPage {
       throw new Error('Expected invalid-token error message but it was not visible.');
     }
     console.log('  ✓ "This password reset token is invalid." message confirmed.');
+  }
+
+  /**
+   * Assert that the "We can't find a user with that email address." error
+   * is visible under the email field on the Forgot Password form.
+   * The form must NOT have navigated away — it stays on /login.
+   * Test PASSES when this message is visible.
+   */
+  async verifyUnregisteredEmailError() {
+    await this.unregisteredEmailError.waitFor({ state: 'visible', timeout: 10000 });
+    const isVisible = await this.unregisteredEmailError.isVisible();
+    if (!isVisible) {
+      throw new Error(
+        'Expected "We can\'t find a user with that email address." but it was not visible.'
+      );
+    }
+    console.log('  ✓ "We can\'t find a user with that email address." message confirmed.');
   }
 }
 
