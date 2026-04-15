@@ -73,6 +73,7 @@ async function verifyEmailViaYopmail(context, email) {
     await yopPage.waitForLoadState('domcontentloaded');
 
     let verifiedPage = null;
+    // Poll because verification emails can arrive with delay.
     let retries = 8;
 
     while (retries > 0 && !verifiedPage) {
@@ -82,12 +83,14 @@ async function verifyEmailViaYopmail(context, email) {
         console.log(`  → Refreshed inbox (${retries} attempts left)…`);
       }
 
+      // Mail content is rendered inside Yopmail's iframe.
       const frame      = yopPage.frameLocator('#ifmail');
       const verifyLink = frame.locator('a', { hasText: /verify/i }).first();
 
       try {
         if (await verifyLink.isVisible({ timeout: 5000 })) {
           console.log('  → Verify link found — clicking…');
+          // Clicking the verify link opens a new tab/window.
           const [newPage] = await Promise.all([
             context.waitForEvent('page'),
             verifyLink.click(),

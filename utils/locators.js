@@ -1,4 +1,7 @@
 const LOCATORS = {
+  // Central selector map used by page objects.
+  // Keep keys semantic (intent-based) so tests remain readable.
+
   // Navigation / Header Dropdown
   landingPageLoginSignupBtn: '//*[@id="page-top"]/header/div/div/div[3]/div[3]/div',
   loginLink: '//*[@id="page-top"]/header/div/div/div[3]/div[3]/ul/li[1]/a',
@@ -24,6 +27,7 @@ const LOCATORS = {
   agentSignUpBtn: '//*[@id="authForm"]/div/span/form/button',
 
   // Agent Request Form (After Verification)
+  // Mixed strategy: CSS for stable inputs, XPath where DOM structure is highly nested.
   agentReqCompanyName: 'input[placeholder="e.g. My Property Agency"]',
   agentReqCompanyRegNo: 'input[placeholder="e.g. VE (3) 0170"]',
   agentReqCompanyEmail: 'input[type="email"][placeholder*="youremail"]',

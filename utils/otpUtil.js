@@ -28,12 +28,15 @@ async function getOtpFromYopmail(context, emailUsername) {
     // Give it a slightly longer moment for the inbox to initially load
     await page.waitForTimeout(3000);
     
+    // Yopmail renders email body inside the #ifmail iframe.
+    // Keep the frame locator outside the loop because only its content changes.
     const mailFrame = page.frameLocator('#ifmail');
     let otpCode = null;
+    // Poll inbox a few times because email delivery can be delayed.
     let retries = 5;
     
     while (retries > 0) {
-      // Click the refresh button to fetch the latest email
+      // Refresh inbox before each attempt to fetch newly delivered mail.
       const refreshButton = page.locator('#refresh');
       if (await refreshButton.isVisible()) {
         await refreshButton.click();
@@ -46,14 +49,14 @@ async function getOtpFromYopmail(context, emailUsername) {
         // Read the body plain text from the mail iframe
         const emailBody = await mailFrame.locator('body').innerText({ timeout: 5000 });
         
-        // Extract 6-digit OTP
+        // Extract the first standalone 6-digit OTP code from the email body.
         const match = emailBody.match(/\b\d{6}\b/);
         if (match) {
           otpCode = match[0];
           break;
         }
       } catch (error) {
-        // Handled: If the frame or body isn't ready or doesn't have the OTP yet, we catch and retry
+        // If the iframe body is not ready yet, retry on the next loop iteration.
       }
       
       retries--;
