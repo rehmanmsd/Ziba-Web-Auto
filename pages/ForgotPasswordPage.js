@@ -46,6 +46,9 @@ class ForgotPasswordPage {
 
     // "Reset Password" submit button — finalises the password change
     this.resetPasswordSubmitBtn = page.locator(LOCATORS.resetPasswordSubmitBtn);
+
+    // Error message shown under the email field when the token is invalid/expired
+    this.invalidTokenError = page.locator(LOCATORS.resetPasswordInvalidTokenError);
   }
 
   // ══════════════════════════════════════════════════════════════════════════
@@ -131,6 +134,7 @@ class ForgotPasswordPage {
 
   /**
    * Click the "Reset Password" button and wait for redirect to /login.
+   * Used in the happy-path reset flow.
    */
   async submitResetForm() {
     await this.resetPasswordSubmitBtn.waitFor({ state: 'visible', timeout: 10000 });
@@ -140,6 +144,33 @@ class ForgotPasswordPage {
     // After a successful reset the app redirects back to /login
     await this.page.waitForURL('**/login', { timeout: 15000 });
     console.log('  → Redirected to /login after password reset.');
+  }
+
+  /**
+   * Click the "Reset Password" button when using an EXPIRED token.
+   * Does NOT wait for a /login redirect — instead waits for the invalid-token
+   * error message to appear, or simply returns after clicking.
+   */
+  async submitResetFormExpectError() {
+    await this.resetPasswordSubmitBtn.waitFor({ state: 'visible', timeout: 10000 });
+    await this.resetPasswordSubmitBtn.click();
+    console.log('  → "Reset Password" button clicked (expecting invalid-token error).');
+    // Give the app time to validate the token and render the error
+    await this.page.waitForTimeout(3000);
+  }
+
+  /**
+   * Assert that the "This password reset token is invalid." message is
+   * visible under the email field on the reset-password page.
+   * Calling this confirms the expired-token validation is working correctly.
+   */
+  async verifyInvalidTokenError() {
+    await this.invalidTokenError.waitFor({ state: 'visible', timeout: 10000 });
+    const isVisible = await this.invalidTokenError.isVisible();
+    if (!isVisible) {
+      throw new Error('Expected invalid-token error message but it was not visible.');
+    }
+    console.log('  ✓ "This password reset token is invalid." message confirmed.');
   }
 }
 

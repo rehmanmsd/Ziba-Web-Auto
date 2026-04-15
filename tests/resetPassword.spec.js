@@ -22,7 +22,7 @@ require('dotenv').config();
 const { test, expect } = require('@playwright/test');
 const { ForgotPasswordPage } = require('../pages/ForgotPasswordPage');
 const { LoginPage }          = require('../pages/LoginPage');
-const { getResetPasswordLinkFromYopmail } = require('../utils/otpUtil');
+const { getResetPasswordLinkFromYopmail, getResetPasswordHrefFromYopmail } = require('../utils/otpUtil');
 
 // ─── Test configuration ──────────────────────────────────────────────────────
 // Using environment variables keeps credentials out of source control.
@@ -131,5 +131,67 @@ test.describe('Forgot Password — Full Reset Flow', () => {
     console.log(`  ✓ Logged in successfully — landed on: ${resetPage.url()}`);
 
     console.log('✅ Full password-reset flow completed!');
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  test('Expired reset link should display invalid token error', async ({
+    page,
+    context,
+  }) => {
+    // ══════════════════════════════════════════════════════════════════════
+    // STEP 1: Navigate to /login and request the FIRST password-reset email
+    // ══════════════════════════════════════════════════════════════════════
+    console.log('Step 1: Requesting first password-reset email…');
+    await forgotPage.navigate();
+    await forgotPage.clickForgotPassword();
+    await forgotPage.requestPasswordReset(RESET_EMAIL);
+    await forgotPage.waitForCheckEmailPage(RESET_EMAIL);
+
+    // ══════════════════════════════════════════════════════════════════════
+    // STEP 2: Extract the reset link URL from the first email WITHOUT clicking
+    // Storing the URL so we can navigate to it after it has been invalidated.
+    // ══════════════════════════════════════════════════════════════════════
+    console.log('Step 2: Extracting reset link href from first email (without clicking)…');
+    const expiredLinkUrl = await getResetPasswordHrefFromYopmail(context, RESET_EMAIL);
+    console.log(`  → First reset link captured: ${expiredLinkUrl}`);
+
+    // ══════════════════════════════════════════════════════════════════════
+    // STEP 3: Request a SECOND reset email — this invalidates the first token
+    // Each new reset request revokes all previously issued tokens for that account.
+    // ══════════════════════════════════════════════════════════════════════
+    console.log('Step 3: Requesting second password-reset email to invalidate the first token…');
+    await forgotPage.navigate();
+    await forgotPage.clickForgotPassword();
+    await forgotPage.requestPasswordReset(RESET_EMAIL);
+    await forgotPage.waitForCheckEmailPage(RESET_EMAIL);
+    // Allow the second email to be delivered before proceeding
+    await page.waitForTimeout(5000);
+    console.log('  → Second reset email sent. First token is now invalid.');
+
+    // ══════════════════════════════════════════════════════════════════════
+    // STEP 4: Navigate directly to the now-expired first reset link
+    // ══════════════════════════════════════════════════════════════════════
+    console.log('Step 4: Opening the expired (first) reset link…');
+    await page.goto(expiredLinkUrl);
+    await page.waitForLoadState('domcontentloaded');
+    console.log(`  → Expired reset page loaded: ${page.url()}`);
+
+    // ══════════════════════════════════════════════════════════════════════
+    // STEP 5: Fill the reset form with the account email and submit
+    // The server validates the token on submission and rejects expired ones.
+    // ══════════════════════════════════════════════════════════════════════
+    console.log('Step 5: Filling reset form with account email and submitting…');
+    const expiredResetPage = new ForgotPasswordPage(page);
+    await expiredResetPage.fillResetForm(RESET_EMAIL, 'AnyPassword@123');
+    await expiredResetPage.submitResetFormExpectError();
+
+    // ══════════════════════════════════════════════════════════════════════
+    // STEP 6: Verify the invalid-token error message under the email field
+    // Test PASSES when this message is visible.
+    // ══════════════════════════════════════════════════════════════════════
+    console.log('Step 6: Verifying invalid token error message…');
+    await expiredResetPage.verifyInvalidTokenError();
+
+    console.log('✅ Expired reset link test passed!');
   });
 });
