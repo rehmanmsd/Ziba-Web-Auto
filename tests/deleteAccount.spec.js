@@ -19,16 +19,14 @@
 
 require('dotenv').config();
 const { test, expect } = require('@playwright/test');
+const { DeleteAccountPage } = require('../pages/DeleteAccountPage');
 
 // ─── Credentials ─────────────────────────────────────────────────────────────
 const EMAIL    = 'ar10@yopmail.com';
 const PASSWORD = '12345678';
 
 // ─── Locators ─────────────────────────────────────────────────────────────────
-const COOKIE_ACCEPT_BTN      = '//*[@id="page-top"]/div[4]/div/div/div/a[1]';
-const INDIVIDUAL_TAB         = '//*[@id="profileVue"]/div[2]/div/div[1]/ul/li[2]/a';
-const REMOVE_ROLE_BTN        = '//*[@id="individualTab"]/div/div/ul/li[2]/button';
-const CONFIRM_REMOVE_BTN     = '//*[@id="loggedin-container"]/div[5]/div[7]/div/button';
+const COOKIE_ACCEPT_BTN = '//*[@id="page-top"]/div[4]/div/div/div/a[1]';
 
 // ─────────────────────────────────────────────────────────────────────────────
 test.describe('Account Deactivation/Deletion', () => {
@@ -76,55 +74,26 @@ test.describe('Account Deactivation/Deletion', () => {
     await page.locator('//*[@id="authForm"]/div/form/div[1]/div/input').fill(EMAIL);
     await page.locator('//*[@id="authForm"]/div/form/div[2]/div/input').fill(PASSWORD);
     await page.locator('//*[@id="authForm"]/div/form/button').click();
-
-    // Wait until redirected away from /login
     await page.waitForURL(/\/(home|dashboard|feed|profile|loggedin)/, { timeout: 30000 });
     console.log(`  → Logged in — on: ${page.url()}`);
 
+    const deleteAccountPage = new DeleteAccountPage(page);
+
     // ── Step 3: Navigate to Profile ─────────────────────────────────────
     console.log('Step 3: Navigating to Profile page…');
-    await page.goto('/profile?tab=personal');
-    // Wait for the profile tab list to be rendered — no networkidle needed
-    const individualTab = page.locator(`xpath=${INDIVIDUAL_TAB}`);
-    await individualTab.waitFor({ state: 'visible', timeout: 20000 });
-    console.log(`  → Profile page loaded — on: ${page.url()}`);
+    await deleteAccountPage.navigateToProfile();
 
     // ── Step 4: Select Individual User tab ──────────────────────────────
     console.log('Step 4: Clicking Individual User tab…');
-    await individualTab.click();
-    // Wait for the #individualTab panel to become visible after the tab switch
-    const individualTabPanel = page.locator('#individualTab');
-    await individualTabPanel.waitFor({ state: 'visible', timeout: 15000 });    // Allow the tab content to fully render before interacting
-    await page.waitForTimeout(3000);    console.log('  → Individual User tab content loaded.');
+    await deleteAccountPage.selectIndividualTab();
 
-    // ── Step 5: Click Remove Role ────────────────────────────────────────
-    console.log('Step 5: Clicking "Remove Role" button…');
-    const removeRoleBtn = page.locator(`xpath=${REMOVE_ROLE_BTN}`);
-    await removeRoleBtn.waitFor({ state: 'visible', timeout: 15000 });
-    await removeRoleBtn.click();
-    console.log('  → Remove Role clicked.');
+    // ── Step 5 & 6: Remove Role and confirm in dialog ────────────────────
+    console.log('Step 5: Clicking "Remove Role" and confirming dialog…');
+    await deleteAccountPage.removeIndividualRole();
 
-    // Wait for the confirmation alert to appear
-    await page.waitForTimeout(5000);
-
-    // ── Step 6: Confirm removal in dialog ───────────────────────────────
-    console.log('Step 6: Confirming removal in confirmation dialog…');
-    const confirmBtn = page.locator(`xpath=${CONFIRM_REMOVE_BTN}`);
-    await confirmBtn.waitFor({ state: 'visible', timeout: 15000 });
-    await confirmBtn.click();
-    console.log('  → Confirmation dialog accepted.');
-
-    // Allow the deletion process to complete before the success pop-up appears
-    await page.waitForTimeout(4000);
-
-    // ── Step 7: SKIPPED — success pop-up handled by app automatically ────
-
-    // ── Step 8: Verify redirect to /profile?tab=personal ────────────────
-    console.log('Step 8: Verifying redirect to /profile?tab=personal…');
-    await page.waitForURL(/\/profile\?tab=personal/, { timeout: 20000 });
-    console.log(`  → Redirected to: ${page.url()}`);
-
-    await expect(page).toHaveURL(/\/profile\?tab=personal/);
+    // ── Step 7: Verify redirect to /profile?tab=personal ────────────────
+    console.log('Step 7: Verifying redirect to /profile?tab=personal…');
+    await deleteAccountPage.verifyRedirectToProfile();
 
     console.log('✅ TC-1 passed — Account role removed and redirect confirmed.');
   });
