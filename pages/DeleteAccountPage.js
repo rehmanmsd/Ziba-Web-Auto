@@ -93,4 +93,4 @@ class DeleteAccountPage {
 
 module.exports = { DeleteAccountPage };
 
-//test line
+//test line ===> const { DeleteAccountPage } = require('../pages/DeleteAccountPage');
