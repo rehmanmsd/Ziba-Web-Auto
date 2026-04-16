@@ -132,6 +132,22 @@ const LOCATORS = {
   bsAddressSuggestion: '//*[@id="mainFormVue"]/div/div[2]/span/form/div[1]/div/div[11]/div/div[1]/div[1]/div/span[2]/div/ul/li[4]',
   bsAddressSaveBtn: '//*[@id="mainFormVue"]/div/div[2]/span/form/div[1]/div/div[11]/div/div[1]/div[1]/div/span[2]/div/div/div/span[2]',
   bsSubmitBtn: '//*[@id="mainFormVue"]/div/div[2]/span/form/div[2]/div/div/div/button[2]',
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Delete / Remove Individual Role  (Profile → As Individual User tab)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // Cookie/promo banner "Accept" button shown on site launch
+  cookieAcceptBtn: '//*[@id="page-top"]/div[4]/div/div/div/a[1]',
+
+  // "As Individual User" tab link on the Profile page
+  individualUserTab: '//*[@id="profileVue"]/div[2]/div/div[1]/ul/li[2]/a',
+
+  // "Remove Role" button inside the Individual tab panel
+  individualRemoveRoleBtn: '//*[@id="individualTab"]/div/div/ul/li[2]/button',
+
+  // "Remove" button inside the confirmation dialog
+  individualConfirmRemoveBtn: '//*[@id="loggedin-container"]/div[5]/div[7]/div/button',
 };
 
 module.exports = { LOCATORS };
