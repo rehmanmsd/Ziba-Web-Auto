@@ -148,6 +148,42 @@ const LOCATORS = {
 
   // "Remove" button inside the confirmation dialog
   individualConfirmRemoveBtn: '//*[@id="loggedin-container"]/div[5]/div[7]/div/button',
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Delete / Remove Agent Role  (Profile → As Agent tab)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // "As Agent" tab link on the Profile page
+  agentTab: '//*[@id="profileVue"]/div[2]/div/div[1]/ul/li[2]/a',
+
+  // "Remove Role" button inside the Agent (Vendor) tab panel
+  agentRemoveRoleBtn: '//*[@id="withDataVendor"]/div[2]/div[2]/button',
+
+  // "Remove" confirmation button inside the dialog
+  agentConfirmRemoveBtn: '//*[@id="loggedin-container"]/div[5]/div[7]/div/button',
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Delete / Remove Business & Service Role  (Profile → As Business & Service tab)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // "As Business & Service" tab link on the Profile page
+  businessTab: '//*[@id="vendor_tab_title"]/a',
+
+  // "Remove Role" button inside the Business & Service tab panel
+  businessRemoveRoleBtn: '//*[@id="withDataVendor"]/div[2]/button',
+
+  // "Yes, remove it!" confirmation button inside the dialog
+  businessConfirmRemoveBtn: '//*[@id="loggedin-container"]/div[5]/div[7]/div/button',
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Delete Account  (Profile → Remove Account after all roles removed)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // "Remove Account" button on the Profile page (visible after all roles are removed)
+  removeAccountBtn: '//*[@id="profile-form"]/div/div[2]/ul/li[2]/button',
+
+  // "Delete Account" confirmation button in the dialog
+  deleteAccountConfirmBtn: '//*[@id="loggedin-container"]/div[5]/div[7]/div/button',
 };
 
 module.exports = { LOCATORS };
