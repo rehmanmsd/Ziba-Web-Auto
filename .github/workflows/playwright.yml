@@ -1,7 +1,6 @@
 name: Playwright Tests
 on:
   workflow_dispatch:
-    description: 'Run Playwright E2E tests manually (live site tests)'
 jobs:
   test:
     timeout-minutes: 60
