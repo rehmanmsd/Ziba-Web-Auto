@@ -184,6 +184,37 @@ const LOCATORS = {
 
   // "Delete Account" confirmation button in the dialog
   deleteAccountConfirmBtn: '//*[@id="loggedin-container"]/div[5]/div[7]/div/button',
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Side Blue Panel  (logged-in user — left sidebar navigation)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // Top section — collapsible menu (hamburger) icon
+  sbMenuIcon:        '//*[@id="sidebardata"]/div/div[1]/div',
+
+  // Top-level navigation links
+  sbDashboard:       '//*[@id="sidebardata"]/div/ul/li[1]/a',
+  sbNeighborhood:    '//*[@id="sidebardata"]/div/ul/li[2]/a',
+
+  // Sub-items revealed after expanding "Neighborhood"
+  // Scoped under the Neighborhood <li> so they cannot match items in the
+  // profile section (which also contains an "Add a New Buy-Sell-Wanted" link).
+  sbPropertyListings:    '//*[@id="sidebardata"]/div/ul/li[2]//a[contains(normalize-space(.),"Property Listings")]',
+  sbBusinessesServices:  '//*[@id="sidebardata"]/div/ul/li[2]//a[contains(normalize-space(.),"Businesses")]',
+  sbBuySellWanted:       '//*[@id="sidebardata"]/div/ul/li[2]//a[@href="/buyandsell/list"]',
+  sbFindAgents:          '//*[@id="sidebardata"]/div/ul/li[2]//a[contains(normalize-space(.),"Find Agents")]',
+
+  // Lower section — FAQ link
+  sbFaq: '//*[@id="sidebardata"]/div/ul/div[1]/a',
+
+  // Image container used to collapse / expand the lower profile section
+  sbProfileImageContainer: '//*[@id="sidebardata"]/div/ul/div[2]',
+
+  // Items revealed inside the expanded profile image container
+  sbMyProfile:        '//*[@id="sidebardata"]/div/ul/div[2]/div[1]/div/ul/a[1]/li',
+  sbManageRole:       '//*[@id="sidebardata"]/div/ul/div[2]/div[1]/div/ul/a[2]',
+  sbAddBuySellWanted: '//*[@id="sidebardata"]/div/ul/div[2]/div[1]/div/ul/a[3]/li',
+  sbLogout:           '//*[@id="sidebardata"]/div/ul/div[2]/div[1]/ul/a/li',
 };
 
 module.exports = { LOCATORS };
