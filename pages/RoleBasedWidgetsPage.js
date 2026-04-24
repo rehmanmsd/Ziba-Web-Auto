@@ -1,5 +1,5 @@
 /**
- * DashboardPage
+ * RoleBasedWidgetsPage
  *
  * Encapsulates verification of role-based widgets on the user's home /
  * dashboard page.
@@ -9,7 +9,7 @@
  * reporting we still drive the verification by the widget's visible name —
  * an internal map below converts each name to its block ID.
  *
- * The "Add Widget" button (#addWidget) must be visible for both roles.
+ * The "Add Widget" button (#addWidget) must be visible for every role.
  */
 
 const { expect } = require('@playwright/test');
@@ -28,7 +28,7 @@ const WIDGET_IDS = {
 
 const ALL_WIDGETS = Object.keys(WIDGET_IDS);
 
-class DashboardPage {
+class RoleBasedWidgetsPage {
   /**
    * @param {import('@playwright/test').Page} page
    */
@@ -114,4 +114,4 @@ class DashboardPage {
   }
 }
 
-module.exports = { DashboardPage, ALL_WIDGETS, WIDGET_IDS };
+module.exports = { RoleBasedWidgetsPage, ALL_WIDGETS, WIDGET_IDS };

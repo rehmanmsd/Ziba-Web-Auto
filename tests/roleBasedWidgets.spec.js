@@ -1,7 +1,7 @@
 /**
- * dashboardWidgets.spec.js
+ * roleBasedWidgets.spec.js
  *
- * Test suite: Role-based dashboard widgets
+ * Test suite: Role-based UI Widgets
  *
  * For each role available to the test account, switch to that role via the
  * sidebar profile section and verify that ONLY the expected widgets are
@@ -32,8 +32,8 @@
 
 require('dotenv').config();
 const { test, expect } = require('@playwright/test');
-const { SidebarPanelPage } = require('../pages/SidebarPanelPage');
-const { DashboardPage }    = require('../pages/DashboardPage');
+const { SidebarPanelPage }      = require('../pages/SidebarPanelPage');
+const { RoleBasedWidgetsPage }  = require('../pages/RoleBasedWidgetsPage');
 
 // ─── Credentials ─────────────────────────────────────────────────────────────
 const EMAIL    = process.env.SP_EMAIL    || 'ar0@yopmail.com';
@@ -71,7 +71,7 @@ test.describe('Role-based Dashboard Widgets', () => {
   let page;
   /** @type {SidebarPanelPage} */
   let sidebar;
-  /** @type {DashboardPage} */
+  /** @type {RoleBasedWidgetsPage} */
   let dashboard;
 
   // Helper: switch active role via the sidebar profile section. Returns
@@ -129,7 +129,7 @@ test.describe('Role-based Dashboard Widgets', () => {
     console.log(`  → Logged in — on: ${page.url()}`);
 
     sidebar   = new SidebarPanelPage(page);
-    dashboard = new DashboardPage(page);
+    dashboard = new RoleBasedWidgetsPage(page);
     await sidebar.open();
   });
 
