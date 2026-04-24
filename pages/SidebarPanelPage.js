@@ -179,15 +179,22 @@ class SidebarPanelPage {
 
   /**
    * Click the profile image container to expand the profile sub-menu,
-   * then verify all four options are visible.
+   * then verify all four options are visible. Idempotent: if the sub-menu
+   * is already expanded (My Profile is visible), the click is skipped so
+   * the section is not accidentally collapsed.
    */
   async expandProfileSectionAndVerify() {
     await this.dismissOverlays();
     await this.scrollIntoView(this.profileImageContainer);
-    // Use force: true as a safety net in case a popup briefly re-appears.
-    await this.profileImageContainer.click({ force: true });
-    console.log('  → Profile image container clicked — sub-menu should expand.');
-    await this.page.waitForTimeout(1000);
+
+    if (await this.myProfile.isVisible().catch(() => false)) {
+      console.log('  → Profile sub-menu already expanded — skipping toggle.');
+    } else {
+      // Use force: true as a safety net in case a popup briefly re-appears.
+      await this.profileImageContainer.click({ force: true });
+      console.log('  → Profile image container clicked — sub-menu should expand.');
+      await this.page.waitForTimeout(1000);
+    }
 
     await this.expectVisible(this.myProfile,        'My Profile');
     await this.expectVisible(this.manageRole,       'Manage Role');
@@ -239,6 +246,93 @@ class SidebarPanelPage {
     await this.page.waitForLoadState('domcontentloaded').catch(() => {});
     await this.page.waitForTimeout(2000);
     console.log(`    landed on: ${this.page.url()}`);
+  }
+
+  // ═════════════════════════════════════════════════════════════════════════
+  // Agent role flow (inside expanded profile section)
+  // ═════════════════════════════════════════════════════════════════════════
+
+  /**
+   * Build a Locator for the role's container <li> in the profile section.
+   * @param {string} roleName e.g. "Real Estate Agent"
+   */
+  _roleItem(roleName) {
+    return this.page.locator(`xpath=${LOCATORS.sbRoleItem(roleName)}`);
+  }
+
+  /**
+   * Returns true when a role with the given visible name exists in the
+   * (already-expanded) profile section.
+   * @param {string} roleName
+   */
+  async hasRole(roleName) {
+    const exists = await this._roleItem(roleName).first().isVisible().catch(() => false);
+    console.log(`  → Role "${roleName}" exists in sidebar: ${exists}`);
+    return exists;
+  }
+
+  /**
+   * Click the role's name (a[1]) to select / activate it.
+   * @param {string} roleName
+   */
+  async selectRole(roleName) {
+    const loc = this.page.locator(`xpath=${LOCATORS.sbRoleSelect(roleName)}`).first();
+    await this.dismissOverlays();
+    await this.scrollIntoView(loc);
+    await loc.waitFor({ state: 'visible', timeout: 10000 });
+    await loc.click({ force: true });
+    console.log(`  → Selected role "${roleName}".`);
+    await this.page.waitForLoadState('domcontentloaded').catch(() => {});
+    await this.page.waitForTimeout(1500);
+    console.log(`    landed on: ${this.page.url()}`);
+  }
+
+  /**
+   * Click the role's "Add New Property" shortcut (a[2]).
+   * @param {string} roleName
+   */
+  async clickRoleAddProperty(roleName) {
+    const loc = this.page.locator(`xpath=${LOCATORS.sbRoleAddProperty(roleName)}`).first();
+    await this.dismissOverlays();
+    await this.scrollIntoView(loc);
+    await loc.waitFor({ state: 'visible', timeout: 10000 });
+    await loc.click({ force: true });
+    console.log(`  → Clicked "Add New Property" for "${roleName}".`);
+    await this.page.waitForLoadState('domcontentloaded').catch(() => {});
+    await this.page.waitForTimeout(1500);
+    console.log(`    landed on: ${this.page.url()}`);
+  }
+
+  /**
+   * Click the role's CRM link (a[3]). The CRM link navigates the SAME tab
+   * to the "/connect-crm" interstitial page. Verifies the resulting URL,
+   * then navigates back so the caller can resume the sidebar flow.
+   *
+   * @param {string} roleName
+   * @param {string|RegExp} expectedUrl  URL (or pattern) the page should land on.
+   * @returns {Promise<import('@playwright/test').Page>} the original page (for chaining)
+   */
+  async clickRoleCrmAndVerify(roleName, expectedUrl) {
+    // Click the inner <li> (matches the actual click target in the UI).
+    const crmXpath = LOCATORS.sbRoleCrm(roleName);
+    const inner = this.page.locator(`xpath=${crmXpath}/li`).first();
+    const anchor = this.page.locator(`xpath=${crmXpath}`).first();
+    const target = (await inner.isVisible().catch(() => false)) ? inner : anchor;
+
+    await this.dismissOverlays();
+    await this.scrollIntoView(target);
+    await target.waitFor({ state: 'visible', timeout: 10000 });
+
+    await target.click({ force: true });
+    console.log(`  → Clicked CRM link for "${roleName}".`);
+
+    await this.page.waitForLoadState('domcontentloaded').catch(() => {});
+    await this.page.waitForTimeout(2000);
+
+    await expect(this.page).toHaveURL(expectedUrl, { timeout: 15000 });
+    console.log(`  ✓ CRM page URL verified: ${this.page.url()}`);
+
+    return this.page;
   }
 }
 

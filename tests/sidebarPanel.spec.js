@@ -187,4 +187,49 @@ test.describe('Side Blue Panel', () => {
 
     console.log('✅ TC-5 passed — all options clicked, finished on Manage Role.');
   });
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // TC-6: "Real Estate Agent" role flow (select → add property → CRM new tab)
+  //       then complete FAQ and profile icon click flow.
+  // ══════════════════════════════════════════════════════════════════════════
+  test('TC-6: Real Estate Agent role flow + FAQ + profile icon click', async () => {
+    test.setTimeout(180_000);
+    const ROLE_NAME      = 'Real Estate Agent';
+    const CRM_URL_REGEX  = /^https:\/\/ziba-property\.com\/connect-crm/;
+
+    console.log(`TC-6: Verifying "${ROLE_NAME}" role exists and exercising its flow…`);
+
+    // Land on a known page and re-open the sidebar / profile section
+    await page.goto(HOME_URL, { waitUntil: 'domcontentloaded' });
+    await sidebar.open();
+    await sidebar.expandProfileSectionAndVerify();
+
+    // ── 1) Verify role existence ─────────────────────────────────────────
+    const exists = await sidebar.hasRole(ROLE_NAME);
+    test.skip(!exists, `"${ROLE_NAME}" role not present for this account — skipping TC-6.`);
+    console.log(`  ✓ "${ROLE_NAME}" role found in sidebar.`);
+
+    // ── 2) Click role name to select it ──────────────────────────────────
+    await sidebar.selectRole(ROLE_NAME);
+
+    // ── 3) Click "Add New Property" ──────────────────────────────────────
+    await page.goto(HOME_URL, { waitUntil: 'domcontentloaded' });
+    await sidebar.open();
+    await sidebar.expandProfileSectionAndVerify();
+    await sidebar.clickRoleAddProperty(ROLE_NAME);
+
+    // ── 4) Click CRM → verify same-tab navigation to /connect-crm ────────
+    await page.goto(HOME_URL, { waitUntil: 'domcontentloaded' });
+    await sidebar.open();
+    await sidebar.expandProfileSectionAndVerify();
+    await sidebar.clickRoleCrmAndVerify(ROLE_NAME, CRM_URL_REGEX);
+
+    // ── 5) Complete FAQ click flow ───────────────────────────────────────
+    await sidebar.clickAndReturn(sidebar.faq, 'FAQ', HOME_URL);
+
+    // ── 6) Complete profile icon click (re-expand profile section) ───────
+    await sidebar.expandProfileSectionAndVerify();
+
+    console.log(`✅ TC-6 passed — "${ROLE_NAME}" role flow completed with FAQ and profile icon click.`);
+  });
 });
