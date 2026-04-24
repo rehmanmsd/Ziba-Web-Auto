@@ -215,6 +215,18 @@ const LOCATORS = {
   sbManageRole:       '//*[@id="sidebardata"]/div/ul/div[2]/div[1]/div/ul/a[2]',
   sbAddBuySellWanted: '//*[@id="sidebardata"]/div/ul/div[2]/div[1]/div/ul/a[3]/li',
   sbLogout:           '//*[@id="sidebardata"]/div/ul/div[2]/div[1]/ul/a/li',
+
+  // ── Role entries inside the profile section ─────────────────────────
+  // Each role <li> contains 3 anchors:
+  //   a[1] → role name (click to select / activate the role)
+  //   a[2] → "Add New Property" shortcut
+  //   a[3] → CRM (opens external CRM dashboard in a new tab)
+  // Locators are scoped by the visible role name so they remain stable
+  // even if the role's index inside the list changes.
+  sbRoleItem:           (roleName) => `//*[@id="sidebardata"]/div/ul/div[2]/div[1]/div/ul/li[.//*[contains(normalize-space(.),"${roleName}")]]`,
+  sbRoleSelect:         (roleName) => `//*[@id="sidebardata"]/div/ul/div[2]/div[1]/div/ul/li[.//*[contains(normalize-space(.),"${roleName}")]]/a[1]`,
+  sbRoleAddProperty:    (roleName) => `//*[@id="sidebardata"]/div/ul/div[2]/div[1]/div/ul/li[.//*[contains(normalize-space(.),"${roleName}")]]/a[2]`,
+  sbRoleCrm:            (roleName) => `//*[@id="sidebardata"]/div/ul/div[2]/div[1]/div/ul/li[.//*[contains(normalize-space(.),"${roleName}")]]/a[3]`,
 };
 
 module.exports = { LOCATORS };
