@@ -29,5 +29,16 @@ module.exports = defineConfig({
         },
       },
     },
+    {
+      name: 'chrome',
+      use: {
+        browserName: 'chromium',
+        channel: 'chrome',
+        viewport: null,
+        launchOptions: {
+          args: ['--disable-gpu', '--no-sandbox', '--start-maximized'],
+        },
+      },
+    },
   ],
 });
