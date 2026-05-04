@@ -24,6 +24,8 @@ const WIDGET_IDS = {
   'Properties by Owners':  'PropertiesByOwnersWidgetBlock',
   'Enquiries':             'EnquiriesWidgetBlock',
   'My Favorite':           'AllFavouritesWidgetBlock',
+  'Service Requests':      'MyServiceRequestWidgetBlock',
+  'Reviews':               'ReviewsWidgetBlock',
 };
 
 const ALL_WIDGETS = Object.keys(WIDGET_IDS);

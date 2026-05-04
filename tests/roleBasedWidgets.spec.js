@@ -24,7 +24,13 @@
  *       - Enquiries
  *       - My Favorite
  *
- * "Add Widget" button (#addWidget) must be visible for both roles.
+ *   • Business and Service account (4 widgets) — only verified if the role exists
+ *       - Listed / Wanted Items
+ *       - Enquiries
+ *       - Service Requests
+ *       - Reviews
+ *
+ * "Add Widget" button (#addWidget) must be visible for every role.
  *
  * Prerequisites (.env):
  *   BASE_URL — e.g. https://ziba-property.com
@@ -47,6 +53,7 @@ const HOME_URL = '/home';
 // ─── Roles & widget catalogs ─────────────────────────────────────────────────
 const AGENT_ROLE      = 'Real Estate Agent';
 const INDIVIDUAL_ROLE = 'Individual User';
+const BUSINESS_ROLE   = 'Business & Service account';
 
 const AGENT_WIDGETS = [
   'Draft',
@@ -61,6 +68,12 @@ const INDIVIDUAL_WIDGETS = [
   'Draft',
   'Enquiries',
   'My Favorite',
+];
+const BUSINESS_WIDGETS = [
+  'Listed / Wanted Items',
+  'Enquiries',
+  'Service Requests',
+  'Reviews',
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -162,5 +175,19 @@ test.describe('Role-based Dashboard Widgets', () => {
     await dashboard.expectOnlyWidgets(INDIVIDUAL_WIDGETS);
     await dashboard.expectAddWidgetVisible();
     console.log(`✅ TC-2 passed — ${INDIVIDUAL_ROLE}: ${INDIVIDUAL_WIDGETS.length} widgets + "Add Widget" verified.`);
+  });
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // TC-3: Business and Service — verify exactly 4 widgets + Add Widget button
+  //        Skipped automatically when the role isn't available on the account.
+  // ══════════════════════════════════════════════════════════════════════════
+  test('TC-3: "Business and Service account" sees exactly 4 widgets + Add Widget button', async () => {
+    console.log(`TC-3: Selecting "${BUSINESS_ROLE}" and verifying widgets…`);
+    const selected = await switchRole(BUSINESS_ROLE);
+    test.skip(!selected, `"${BUSINESS_ROLE}" role not present for this account — skipping TC-3.`);
+
+    await dashboard.expectOnlyWidgets(BUSINESS_WIDGETS);
+    await dashboard.expectAddWidgetVisible();
+    console.log(`✅ TC-3 passed — ${BUSINESS_ROLE}: ${BUSINESS_WIDGETS.length} widgets + "Add Widget" verified.`);
   });
 });
