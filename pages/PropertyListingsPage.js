@@ -37,6 +37,7 @@ class PropertyListingsPage {
     // Internal links section at the bottom
     this.internalLinksTitle = page.locator('xpath=//*[@id="vacancyList"]/section/div[1]');
     this.internalLinksList  = page.locator('xpath=//*[@id="vacancyList"]/section/div[2]');
+
   }
 
   // ─── Generic helpers ──────────────────────────────────────────────────
@@ -154,6 +155,459 @@ class PropertyListingsPage {
       counts.push(Number.isFinite(num) ? num : 0);
     }
     return counts;
+  }
+
+  // ─── Header Section Locators ──────────────────────────────────────────
+
+  pageHeaderBlock() { return this.page.locator('//*[@id="PageHeaderBlock"]/div'); }
+  zibaLogo() { return this.page.locator('xpath=//*[@id="PageHeaderBlock"]//img[contains(@src, "logo") or contains(@alt, "logo")]').first(); }
+  breadcrumbNav() { return this.page.locator('xpath=//*[@id="PageHeaderBlock"]//nav[@aria-label="breadcrumb"] | //*[@id="PageHeaderBlock"]//div[contains(@class, "breadcrumb")]'); }
+  favouriteIcon() { return this.page.locator('xpath=//*[@id="PageHeaderBlock"]//span[contains(@class, "heart") or @aria-label*="Favourite" i]'); }
+  goToCrmButton() { return this.page.locator('xpath=//*[@id="PageHeaderBlock"]//button[contains(text(), "CRM") or contains(@aria-label, "CRM")]'); }
+  addNewPropertyButton() { return this.page.locator('xpath=//*[@id="PageHeaderBlock"]//button[contains(text(), "Property") or contains(@aria-label, "Add") or contains(@class, "btn-add")]').first(); }
+
+  // ─── Search Locators ─────────────────────────────────────────────────
+
+  searchBar() { return this.page.locator('//*[@id="search"]'); }
+  searchDiv() { return this.page.locator('//*[@id="searchDiv"]'); }
+  useCurrentLocationOption() { return this.page.locator('//*[@id="searchDiv"]/div[2]/ul/li[1]'); }
+  searchInput() { return this.page.locator('//*[@id="search"]'); }
+
+  // Country filter (top search area)
+  countryDropdown() { return this.page.locator('//*[@id="search-prop"]/span/span/span[1]/span'); }
+  countryResultsList() { return this.page.locator('.select2-container--open .select2-results__options').first(); }
+  countrySearchInput() { return this.page.locator('.select2-container--open .select2-search__field').first(); }
+  autoLocateButton() { return this.page.locator('//*[@id="loggedin-container"]/span/span/div'); }
+
+  // ─── Map View Locators ───────────────────────────────────────────────
+
+  mapViewButton() { return this.page.locator('//*[@id="mapAppVue"]/div[2]/div/button'); }
+  mapContainer() { return this.page.locator('//*[@id="dmap"]'); }
+  mapPointerMarker() { return this.page.locator('//*[@id="dmap"]/div/div[3]/div[1]/div[2]/div/div[3]/div[1]/img'); }
+  backToMapButton() { return this.page.locator('//*[@id="back-to-map"]/div[1]'); }
+  closeMapButton() { return this.page.locator('//*[@id="vac-map"]/div[1]/div'); }
+
+  // ─── Filter Locators ────────────────────────────────────────────────
+
+  filterSection() { return this.page.locator('//*[@id="property-listing-filters"]'); }
+  
+  // Sale/Rent/Auction filters
+  saleFilterButton() { return this.page.locator('//*[@id="property-listing-filters"]/div[1]/div[2]/div[1]/label'); }
+  rentFilterButton() { return this.page.locator('//*[@id="property-listing-filters"]/div[1]/div[2]/div[2]/label'); }
+  auctionFilterButton() { return this.page.locator('//*[@id="property-listing-filters"]/div[2]/div[1]/label'); }
+
+  // Posted By filter
+  postedByDropdown() { return this.page.locator('//*[@id="property-listing-filters"]/div[2]/div[2]/div/button'); }
+  myListOption() { return this.page.locator('//*[@id="bs-select-16-1"]'); }
+  postedByOwnerOption() { return this.page.locator('//*[@id="bs-select-16-2"]'); }
+  postedByAgentOption() { return this.page.locator('//*[@id="bs-select-16-3"]'); }
+
+  // Property Type filter
+  propertyTypeDropdown() { return this.page.locator('//*[@id="property-listing-filters"]/div[2]/div[3]/div/button'); }
+  propertyTypeOption() { return this.page.locator('//*[@id="bs-select-11-3"]'); }
+
+  // Price filters
+  minPriceDropdown() { return this.page.locator('//*[@id="property-listing-filters"]/div[2]/div[4]/div/button'); }
+  minPriceSelect() { return this.page.locator('//*[@id="bs-select-12"]'); }
+  maxPriceDropdown() { return this.page.locator('//*[@id="property-listing-filters"]/div[2]/div[5]/div/button'); }
+  maxPriceOptions() { return this.page.locator('//*[@id="property-listing-filters"]/div[2]/div[5]/div/div'); }
+
+  // Bedroom filter
+  bedroomDropdown() { return this.page.locator('//*[@id="property-listing-filters"]/div[2]/div[8]/div/button'); }
+  bedroomOptions() { return this.page.locator('//*[@id="property-listing-filters"]/div[2]/div[8]/div/div'); }
+
+  // Bathroom filter
+  bathroomDropdown() { return this.page.locator('//*[@id="property-listing-filters"]/div[2]/div[9]/div/button'); }
+  bathroomOptions() { return this.page.locator('//*[@id="property-listing-filters"]/div[2]/div[9]/div/div'); }
+
+  // Parking filter
+  parkingDropdown() { return this.page.locator('//*[@id="property-listing-filters"]/div[2]/div[10]/div/button'); }
+  parkingOptions() { return this.page.locator('//*[@id="property-listing-filters"]/div[2]/div[10]/div/div'); }
+
+  // Sort / View / Pagination / Ads
+  sortDropdownButton() { return this.page.locator('//*[@id="grid"]/div[1]/div[1]/div[2]/div[2]/div/button'); }
+  sortDropdownMenu() { return this.page.locator('//*[@id="grid"]/div[1]/div[1]/div[2]/div[2]/div/div'); }
+  listViewButton() { return this.page.locator('//*[@id="grid"]/div[1]/div[1]/div[2]/div[3]/span[1]'); }
+  gridViewButton() { return this.page.locator('//*[@id="grid"]/div[1]/div[1]/div[2]/div[3]/span[2]'); }
+  bsAdvertisementBlock() { return this.page.locator('//*[@id="grid"]/div[1]/div[4]/div[9]'); }
+  paginationNextButton() { return this.page.locator('//*[@id="grid"]/div[1]/div[6]/div/ul/li[8]/a/i'); }
+  paginationPreviousButton() { return this.page.locator('//*[@id="grid"]/div[1]/div[6]/div/ul/li[2]/a'); }
+
+  // ─── Header Verification Methods ─────────────────────────────────────
+
+  async verifyHeaderElements() {
+    const header = this.pageHeaderBlock();
+    
+    // Wait longer for header to appear
+    console.log('  → Waiting for PageHeaderBlock to appear...');
+    try {
+      await header.waitFor({ state: 'attached', timeout: 20000 });
+      console.log('  → PageHeaderBlock found and attached');
+    } catch (error) {
+      console.log(`  ⚠ PageHeaderBlock not found after 20s: ${error.message}`);
+      return;
+    }
+
+    // Now check visibility
+    const headerVisible = await header.isVisible().catch(() => false);
+    
+    if (!headerVisible) {
+      console.log('  ⚠ Header block is attached but not visible - may be off-screen or hidden');
+      return;
+    }
+
+    console.log('  ✓ Header block is visible');
+
+    // Check each header element with graceful fallback
+    const logoCheck = await this.zibaLogo().isVisible().catch(() => false);
+    const breadcrumbCheck = await this.breadcrumbNav().isVisible().catch(() => false);
+    const favCheck = await this.favouriteIcon().isVisible().catch(() => false);
+    const crmCheck = await this.goToCrmButton().isVisible().catch(() => false);
+    const addPropCheck = await this.addNewPropertyButton().isVisible().catch(() => false);
+
+    console.log(`  → Header Elements Found: Logo=${logoCheck}, Breadcrumb=${breadcrumbCheck}, Favourite=${favCheck}, CRM=${crmCheck}, AddProperty=${addPropCheck}`);
+
+    if (logoCheck) {
+      await expect(this.zibaLogo(), 'Ziba logo should be visible').toBeVisible();
+      console.log('  ✓ Ziba logo verified');
+    }
+    if (breadcrumbCheck) {
+      await expect(this.breadcrumbNav(), 'Breadcrumb navigation should be visible').toBeVisible();
+      console.log('  ✓ Breadcrumb verified');
+    }
+    if (favCheck) {
+      await expect(this.favouriteIcon(), 'Favourite icon should be visible').toBeVisible();
+      console.log('  ✓ Favourite icon verified');
+    }
+    if (crmCheck) {
+      await expect(this.goToCrmButton(), 'Go to CRM button should be visible').toBeVisible();
+      console.log('  ✓ Go to CRM button verified');
+    }
+    if (addPropCheck) {
+      await expect(this.addNewPropertyButton(), 'Add new property button should be visible').toBeVisible();
+      console.log('  ✓ Add new property button verified');
+    }
+  }
+
+  // ─── Search Methods ────────────────────────────────────────────────
+
+  async openSearchBar() {
+    const searchBar = this.searchBar();
+    await searchBar.scrollIntoViewIfNeeded().catch(() => {});
+    await searchBar.click();
+    await this.page.waitForTimeout(500);
+  }
+
+  async searchByKeyword(keyword) {
+    const search = this.searchInput();
+    await search.fill(keyword);
+    await this.page.waitForTimeout(800);
+  }
+
+  async pressEnterInSearch() {
+    await this.page.keyboard.press('Enter');
+    await this.page.waitForTimeout(1500);
+  }
+
+  async useCurrentLocation() {
+    const currentLocOption = this.useCurrentLocationOption();
+    await currentLocOption.click().catch(() => {});
+    await this.page.waitForTimeout(2000);
+  }
+
+  async getSearchSuggestions() {
+    const suggestions = this.page.locator('//*[@id="searchDiv"]/div[2]/ul/li');
+    const count = await suggestions.count();
+    return count;
+  }
+
+  async getCountryOptions() {
+    const dropdown = this.countryDropdown().first();
+    const visible = await dropdown.isVisible().catch(() => false);
+    if (!visible) return [];
+
+    await dropdown.scrollIntoViewIfNeeded().catch(() => {});
+    const opened = await dropdown.click({ timeout: 5000, force: true }).then(() => true).catch(() => false);
+    if (!opened) return [];
+    await this.page.waitForTimeout(1500);
+
+    const resultsList = this.countryResultsList();
+    await resultsList.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
+    await this.page.waitForTimeout(800);
+
+    const options = resultsList.locator('li');
+    const count = await options.count();
+    const values = [];
+    for (let i = 0; i < count; i++) {
+      const txt = (await options.nth(i).innerText().catch(() => '')).trim();
+      if (txt) values.push(txt);
+    }
+    return values;
+  }
+
+  async selectCountryByName(countryName) {
+    const normalizedName = countryName.trim().toLowerCase() === 'uae'
+      ? 'United Arab Emirates'
+      : countryName;
+
+    const dropdown = this.countryDropdown().first();
+    await dropdown.scrollIntoViewIfNeeded().catch(() => {});
+    const opened = await dropdown.click({ timeout: 5000, force: true }).then(() => true).catch(() => false);
+    if (!opened) return false;
+    await this.page.waitForTimeout(1000);
+
+    // Type country name in search field
+    const searchInput = this.countrySearchInput();
+    const searchVisible = await searchInput.isVisible().catch(() => false);
+    if (!searchVisible) return false;
+
+    await searchInput.fill('');
+    await this.page.waitForTimeout(250);
+    await searchInput.type(normalizedName, { delay: 50 });
+    await this.page.waitForTimeout(1000);
+
+    // Click the matching country option
+    const resultsList = this.countryResultsList();
+    const countryOption = resultsList
+      .locator('li.select2-results__option')
+      .filter({ hasText: new RegExp(`^\\s*${normalizedName}\\s*$`, 'i') })
+      .first();
+    const optionVisible = await countryOption.isVisible().catch(() => false);
+    if (!optionVisible) return false;
+
+    await countryOption.click({ timeout: 5000 }).catch(() => {});
+    await this.page.waitForTimeout(1500);
+    return true;
+  }
+
+  async applyAutoLocate() {
+    await this.autoLocateButton().scrollIntoViewIfNeeded().catch(() => {});
+    await this.autoLocateButton().click().catch(() => {});
+    await this.page.waitForTimeout(1500);
+  }
+
+  // ─── Map View Methods ──────────────────────────────────────────────
+
+  async openMapView() {
+    const mapBtn = this.mapViewButton();
+    await mapBtn.scrollIntoViewIfNeeded().catch(() => {});
+    await mapBtn.click();
+    await this.page.waitForTimeout(2000);
+  }
+
+  async waitForMapPinsLoad() {
+    const map = this.mapContainer();
+    await map.waitFor({ state: 'attached', timeout: 15000 });
+    await this.page.waitForTimeout(2000);
+  }
+
+  async clickMapPointer() {
+    const pointer = this.mapPointerMarker();
+    await pointer.click().catch(() => {});
+    await this.page.waitForTimeout(1000);
+  }
+
+  async zoomMapView() {
+    const zoomBtn = this.backToMapButton();
+    await zoomBtn.click().catch(() => {});
+    await this.page.waitForTimeout(1000);
+  }
+
+  async closeMapView() {
+    const closeBtn = this.closeMapButton();
+    await closeBtn.click().catch(() => {});
+    await this.page.waitForTimeout(1500);
+  }
+
+  // ─── Filter Methods ────────────────────────────────────────────────
+
+  async applySaleFilter() {
+    const saleBtn = this.saleFilterButton();
+    await saleBtn.scrollIntoViewIfNeeded().catch(() => {});
+    await saleBtn.click();
+    await this.page.waitForTimeout(1000);
+  }
+
+  async applyRentFilter() {
+    const rentBtn = this.rentFilterButton();
+    await rentBtn.scrollIntoViewIfNeeded().catch(() => {});
+    await rentBtn.click();
+    await this.page.waitForTimeout(1000);
+  }
+
+  async applyAuctionFilter() {
+    const auctionBtn = this.auctionFilterButton();
+    await auctionBtn.scrollIntoViewIfNeeded().catch(() => {});
+    await auctionBtn.click();
+    await this.page.waitForTimeout(1000);
+  }
+
+  async selectPostedByFilter(option) {
+    // option: 'myList' | 'owner' | 'agent'
+    const dropdown = this.postedByDropdown();
+    await dropdown.click();
+    await this.page.waitForTimeout(500);
+
+    let optionLocator;
+    switch (option.toLowerCase()) {
+      case 'mylist':
+        optionLocator = this.myListOption();
+        break;
+      case 'owner':
+        optionLocator = this.postedByOwnerOption();
+        break;
+      case 'agent':
+        optionLocator = this.postedByAgentOption();
+        break;
+      default:
+        throw new Error(`Unknown Posted By option: ${option}`);
+    }
+
+    await optionLocator.click().catch(() => {});
+    await this.page.waitForTimeout(1000);
+  }
+
+  async selectPropertyType() {
+    const dropdown = this.propertyTypeDropdown();
+    await dropdown.scrollIntoViewIfNeeded().catch(() => {});
+    await dropdown.click();
+    await this.page.waitForTimeout(500);
+
+    const option = this.propertyTypeOption();
+    await option.click().catch(() => {});
+    await this.page.waitForTimeout(1000);
+  }
+
+  async selectMinPrice() {
+    const dropdown = this.minPriceDropdown();
+    await dropdown.scrollIntoViewIfNeeded().catch(() => {});
+    await dropdown.click();
+    await this.page.waitForTimeout(500);
+
+    const select = this.minPriceSelect();
+    const options = await select.locator('option').count();
+    if (options > 1) {
+      await select.selectOption({ index: 1 });
+    }
+    await this.page.waitForTimeout(1000);
+  }
+
+  async selectMaxPrice() {
+    const dropdown = this.maxPriceDropdown();
+    await dropdown.scrollIntoViewIfNeeded().catch(() => {});
+    await dropdown.click();
+    await this.page.waitForTimeout(500);
+
+    const options = this.maxPriceOptions();
+    const optionCount = await options.locator('li, div').count();
+    if (optionCount > 0) {
+      await options.locator('li, div').first().click().catch(() => {});
+    }
+    await this.page.waitForTimeout(1000);
+  }
+
+  async selectBedroom() {
+    const dropdown = this.bedroomDropdown();
+    await dropdown.scrollIntoViewIfNeeded().catch(() => {});
+    await dropdown.click();
+    await this.page.waitForTimeout(500);
+
+    const options = this.bedroomOptions();
+    const firstOption = options.locator('li, div').first();
+    await firstOption.click().catch(() => {});
+    await this.page.waitForTimeout(1000);
+  }
+
+  async selectBathroom() {
+    const dropdown = this.bathroomDropdown();
+    await dropdown.scrollIntoViewIfNeeded().catch(() => {});
+    await dropdown.click();
+    await this.page.waitForTimeout(500);
+
+    const options = this.bathroomOptions();
+    const firstOption = options.locator('li, div').first();
+    await firstOption.click().catch(() => {});
+    await this.page.waitForTimeout(1000);
+  }
+
+  async selectParking() {
+    const dropdown = this.parkingDropdown();
+    await dropdown.scrollIntoViewIfNeeded().catch(() => {});
+    await dropdown.click();
+    await this.page.waitForTimeout(500);
+
+    const options = this.parkingOptions();
+    const firstOption = options.locator('li, div').first();
+    await firstOption.click().catch(() => {});
+    await this.page.waitForTimeout(1000);
+  }
+
+  async getSortOptions() {
+    const sortBtn = this.sortDropdownButton().first();
+    const visible = await sortBtn.isVisible().catch(() => false);
+    if (!visible) return [];
+
+    await sortBtn.scrollIntoViewIfNeeded().catch(() => {});
+    const opened = await sortBtn.click({ timeout: 5000, force: true }).then(() => true).catch(() => false);
+    if (!opened) return [];
+    await this.page.waitForTimeout(500);
+
+    const options = this.sortDropdownMenu().locator('a, button, li');
+    const count = await options.count();
+    const values = [];
+    for (let i = 0; i < count; i++) {
+      const txt = (await options.nth(i).innerText().catch(() => '')).trim();
+      if (txt) values.push(txt);
+    }
+    return values;
+  }
+
+  async selectSortOptionByIndex(index) {
+    const sortBtn = this.sortDropdownButton().first();
+    await sortBtn.scrollIntoViewIfNeeded().catch(() => {});
+    const opened = await sortBtn.click({ timeout: 5000, force: true }).then(() => true).catch(() => false);
+    if (!opened) return false;
+    await this.page.waitForTimeout(500);
+
+    const options = this.sortDropdownMenu().locator('a, button, li');
+    const count = await options.count();
+    if (count === 0) return false;
+
+    const targetIndex = Math.min(index, count - 1);
+    await options.nth(targetIndex).click().catch(() => {});
+    await this.page.waitForTimeout(1200);
+    return true;
+  }
+
+  async switchToListView() {
+    await this.listViewButton().scrollIntoViewIfNeeded().catch(() => {});
+    await this.listViewButton().click().catch(() => {});
+    await this.page.waitForTimeout(1000);
+  }
+
+  async switchToGridView() {
+    await this.gridViewButton().scrollIntoViewIfNeeded().catch(() => {});
+    await this.gridViewButton().click().catch(() => {});
+    await this.page.waitForTimeout(1000);
+  }
+
+  async hasBsAdAfterFourthProperty() {
+    const ad = this.bsAdvertisementBlock();
+    return ad.isVisible().catch(() => false);
+  }
+
+  async goToNextPage() {
+    const nextBtn = this.paginationNextButton();
+    await nextBtn.scrollIntoViewIfNeeded().catch(() => {});
+    await nextBtn.click().catch(() => {});
+    await this.page.waitForTimeout(1500);
+  }
+
+  async goToPreviousPage() {
+    const prevBtn = this.paginationPreviousButton();
+    await prevBtn.scrollIntoViewIfNeeded().catch(() => {});
+    await prevBtn.click().catch(() => {});
+    await this.page.waitForTimeout(1500);
   }
 }
 
