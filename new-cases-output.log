@@ -1,0 +1,63 @@
+[dotenv@17.3.1] injecting env (3) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.3.1] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+
+Running 5 tests using 1 worker
+
+[1A[2K[dotenv@17.3.1] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+
+[1A[2K[dotenv@17.3.1] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+
+[1A[2K[1/5] [chrome] › tests/propertyListingsComprehensive.spec.js:680:3 › Property Listings - Comprehensive Tests › TC-28: Country filter - apply dropdown values one by one
+[1A[2K[chrome] › tests/propertyListingsComprehensive.spec.js:680:3 › Property Listings - Comprehensive Tests › TC-28: Country filter - apply dropdown values one by one
+Setup: Logging in as ar0@yopmail.com…
+
+[1A[2K  → Logged in — on: https://ziba-property.com/home
+
+[1A[2KSetup: Navigating to Property Listings: https://ziba-property.com/Pakistan/sale
+
+[1A[2K  ✓ Property listings page loaded successfully
+
+[1A[2K  → Fetching country dropdown values...
+
+[1A[2K  → Country dropdown values not available on current page state.
+
+[1A[2K✅ TC-28 — Country filter check completed (no selectable values found).
+
+[1A[2K[2/5] [chrome] › tests/propertyListingsComprehensive.spec.js:711:3 › Property Listings - Comprehensive Tests › TC-30: Sort dropdown values - verify one by one
+[1A[2K[chrome] › tests/propertyListingsComprehensive.spec.js:711:3 › Property Listings - Comprehensive Tests › TC-30: Sort dropdown values - verify one by one
+  → Fetching sort dropdown values...
+
+[1A[2K  → Sort dropdown values not available on current page state.
+
+[1A[2K✅ TC-30 — Sort check completed (no values found).
+
+[1A[2K[3/5] [chrome] › tests/propertyListingsComprehensive.spec.js:734:3 › Property Listings - Comprehensive Tests › TC-31: Switch between list and grid view
+[1A[2K[chrome] › tests/propertyListingsComprehensive.spec.js:734:3 › Property Listings - Comprehensive Tests › TC-31: Switch between list and grid view
+  → Switching to list view...
+
+[1A[2K  → Switching back to grid view...
+
+[1A[2K✅ TC-31 — List/Grid view switch verified.
+
+[1A[2K[4/5] [chrome] › tests/propertyListingsComprehensive.spec.js:749:3 › Property Listings - Comprehensive Tests › TC-32: Verify B&S advertisement block (if available)
+[1A[2K[chrome] › tests/propertyListingsComprehensive.spec.js:749:3 › Property Listings - Comprehensive Tests › TC-32: Verify B&S advertisement block (if available)
+  → Checking B&S advertisement placement...
+
+[1A[2K  → B&S advertisement block is displayed.
+
+[1A[2K✅ TC-32 — Advertisement check completed.
+
+[1A[2K[5/5] [chrome] › tests/propertyListingsComprehensive.spec.js:765:3 › Property Listings - Comprehensive Tests › TC-33: Verify pagination (next and previous)
+[1A[2K[chrome] › tests/propertyListingsComprehensive.spec.js:765:3 › Property Listings - Comprehensive Tests › TC-33: Verify pagination (next and previous)
+  → Going to next page...
+
+[1A[2K  → Going to previous page...
+
+[1A[2K✅ TC-33 — Pagination forward/backward verified.
+
+[1A[2K  5 passed (44.7s)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m

@@ -1,0 +1,77 @@
+[dotenv@17.3.1] injecting env (3) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.3.1] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+
+Running 32 tests using 1 worker
+
+[1A[2K[dotenv@17.3.1] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+
+[1A[2K[dotenv@17.3.1] injecting env (0) from .env -- tip: 🤖 agentic secret storage: https://dotenvx.com/as2
+
+[1A[2K[1/32] [chrome] › tests/propertyListingsComprehensive.spec.js:114:3 › Property Listings - Comprehensive Tests › TC-1: Verify Header Section (Ziba logo, Breadcrumb, Favourite, CRM, Add Property)
+[1A[2K[chrome] › tests/propertyListingsComprehensive.spec.js:114:3 › Property Listings - Comprehensive Tests › TC-1: Verify Header Section (Ziba logo, Breadcrumb, Favourite, CRM, Add Property)
+Setup: Logging in as ar0@yopmail.com…
+
+[1A[2K  1) [chrome] › tests/propertyListingsComprehensive.spec.js:114:3 › Property Listings - Comprehensive Tests › TC-1: Verify Header Section (Ziba logo, Breadcrumb, Favourite, CRM, Add Property) 
+
+    TimeoutError: page.waitForURL: Timeout 30000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "https://ziba-property.com/home"
+      "domcontentloaded" event fired
+    ============================================================
+
+      88 |     await page.locator('//*[@id="authForm"]/div/form/div[2]/div/input').fill(PASSWORD);
+      89 |     await page.locator('//*[@id="authForm"]/div/form/button').click();
+    > 90 |     await page.waitForURL(/\/(home|dashboard|feed|profile|loggedin)/, { timeout: 30000 });
+         |                ^
+      91 |     console.log(`  → Logged in — on: ${page.url()}`);
+      92 |
+      93 |     console.log(`Setup: Navigating to Property Listings: ${LISTINGS_URL}`);
+        at /Users/mohsin/ziba_web-automation/tests/propertyListingsComprehensive.spec.js:90:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/propertyListingsComprehens-84250-Favourite-CRM-Add-Property--chrome/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/propertyListingsComprehens-84250-Favourite-CRM-Add-Property--chrome/error-context.md
+
+
+[1A[2K[2/32] [chrome] › tests/propertyListingsComprehensive.spec.js:123:3 › Property Listings - Comprehensive Tests › TC-2: View List of Available Properties
+[1A[2K[3/32] [chrome] › tests/propertyListingsComprehensive.spec.js:142:3 › Property Listings - Comprehensive Tests › TC-3: Search by Title
+[1A[2K[4/32] [chrome] › tests/propertyListingsComprehensive.spec.js:164:3 › Property Listings - Comprehensive Tests › TC-4: Search by Address
+[1A[2K[5/32] [chrome] › tests/propertyListingsComprehensive.spec.js:184:3 › Property Listings - Comprehensive Tests › TC-5: Search by State/City/Country
+[1A[2K[6/32] [chrome] › tests/propertyListingsComprehensive.spec.js:204:3 › Property Listings - Comprehensive Tests › TC-6: Search with Partial Input
+[1A[2K[7/32] [chrome] › tests/propertyListingsComprehensive.spec.js:228:3 › Property Listings - Comprehensive Tests › TC-7: Search with Typo
+[1A[2K[8/32] [chrome] › tests/propertyListingsComprehensive.spec.js:249:3 › Property Listings - Comprehensive Tests › TC-8: Search with Gibberish Text
+[1A[2K[9/32] [chrome] › tests/propertyListingsComprehensive.spec.js:270:3 › Property Listings - Comprehensive Tests › TC-9: Search Using Current Location
+[1A[2K[10/32] [chrome] › tests/propertyListingsComprehensive.spec.js:302:3 › Property Listings - Comprehensive Tests › TC-10: Global Suggestions While Typing
+[1A[2K[11/32] [chrome] › tests/propertyListingsComprehensive.spec.js:328:3 › Property Listings - Comprehensive Tests › TC-11: Very Fast Typing in Search Bar
+[1A[2K[12/32] [chrome] › tests/propertyListingsComprehensive.spec.js:352:3 › Property Listings - Comprehensive Tests › TC-12: Show Properties on Map
+[1A[2K[13/32] [chrome] › tests/propertyListingsComprehensive.spec.js:374:3 › Property Listings - Comprehensive Tests › TC-13: Click Map Pointer to Check Property Modal
+[1A[2K[14/32] [chrome] › tests/propertyListingsComprehensive.spec.js:400:3 › Property Listings - Comprehensive Tests › TC-14: Zoom Map View
+[1A[2K[15/32] [chrome] › tests/propertyListingsComprehensive.spec.js:426:3 › Property Listings - Comprehensive Tests › TC-15: Close Map View
+[1A[2K[16/32] [chrome] › tests/propertyListingsComprehensive.spec.js:452:3 › Property Listings - Comprehensive Tests › TC-16: Filter by Sale Type
+[1A[2K[17/32] [chrome] › tests/propertyListingsComprehensive.spec.js:474:3 › Property Listings - Comprehensive Tests › TC-17: Filter by Rent Type
+[1A[2K[18/32] [chrome] › tests/propertyListingsComprehensive.spec.js:488:3 › Property Listings - Comprehensive Tests › TC-18: Filter by Auction Type
+[1A[2K[19/32] [chrome] › tests/propertyListingsComprehensive.spec.js:511:3 › Property Listings - Comprehensive Tests › TC-19: Filter by Posted By - My List
+[1A[2K[20/32] [chrome] › tests/propertyListingsComprehensive.spec.js:529:3 › Property Listings - Comprehensive Tests › TC-20: Filter by Posted By - Owner
+[1A[2K[21/32] [chrome] › tests/propertyListingsComprehensive.spec.js:547:3 › Property Listings - Comprehensive Tests › TC-21: Filter by Posted By - Other Agents
+[1A[2K[22/32] [chrome] › tests/propertyListingsComprehensive.spec.js:565:3 › Property Listings - Comprehensive Tests › TC-22: Filter by Property Type
+[1A[2K[23/32] [chrome] › tests/propertyListingsComprehensive.spec.js:583:3 › Property Listings - Comprehensive Tests › TC-23: Apply Min Price Filter
+[1A[2K[24/32] [chrome] › tests/propertyListingsComprehensive.spec.js:601:3 › Property Listings - Comprehensive Tests › TC-24: Apply Max Price Filter
+[1A[2K[25/32] [chrome] › tests/propertyListingsComprehensive.spec.js:619:3 › Property Listings - Comprehensive Tests › TC-25: Filter by Bedroom
+[1A[2K[26/32] [chrome] › tests/propertyListingsComprehensive.spec.js:637:3 › Property Listings - Comprehensive Tests › TC-26: Filter by Bathroom
+[1A[2K[27/32] [chrome] › tests/propertyListingsComprehensive.spec.js:655:3 › Property Listings - Comprehensive Tests › TC-27: Filter by Parking
+[1A[2K[28/32] [chrome] › tests/propertyListingsComprehensive.spec.js:673:3 › Property Listings - Comprehensive Tests › TC-28: Country filter - apply dropdown values one by one
+[1A[2K[29/32] [chrome] › tests/propertyListingsComprehensive.spec.js:704:3 › Property Listings - Comprehensive Tests › TC-30: Sort dropdown values - verify one by one
+[1A[2K[30/32] [chrome] › tests/propertyListingsComprehensive.spec.js:727:3 › Property Listings - Comprehensive Tests › TC-31: Switch between list and grid view
+[1A[2K[31/32] [chrome] › tests/propertyListingsComprehensive.spec.js:742:3 › Property Listings - Comprehensive Tests › TC-32: Verify B&S advertisement block (if available)
+[1A[2K[32/32] [chrome] › tests/propertyListingsComprehensive.spec.js:758:3 › Property Listings - Comprehensive Tests › TC-33: Verify pagination (next and previous)
+[1A[2K  1 failed
+    [chrome] › tests/propertyListingsComprehensive.spec.js:114:3 › Property Listings - Comprehensive Tests › TC-1: Verify Header Section (Ziba logo, Breadcrumb, Favourite, CRM, Add Property) 
+  31 did not run
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m
