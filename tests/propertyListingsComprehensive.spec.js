@@ -37,6 +37,8 @@
  *   TC-31: Switch Between List and Grid View
  *   TC-32: Verify B&S Advertisement Block
  *   TC-33: Verify Pagination (Next and Previous)
+ *   TC-34: Verify Area Expert section (5 entries, sorted by listings DESC)
+ *   TC-35: Verify Internal Links section title and clickable links
  */
 
 require('dotenv').config();
@@ -778,5 +780,56 @@ test.describe('Property Listings - Comprehensive Tests', () => {
     await page.waitForTimeout(1500);
 
     console.log('✅ TC-33 — Pagination forward/backward verified.');
+  });
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // TC-34: Area Expert panel — exactly 5 rows, ordered by listing count DESC
+  // ══════════════════════════════════════════════════════════════════════════
+  test('TC-34: Area Expert section shows exactly 5 entries, sorted by listings DESC', async () => {
+    await listings.waitForAreaExpert();
+    await expect(listings.areaExpertRoot, 'Area Expert title should be present')
+      .toContainText(/Area Experts/i, { timeout: 15000 });
+
+    const count = await listings.areaExpertItems.count();
+    expect(count, 'Area Expert should show exactly 5 entries').toBe(5);
+    console.log(`  ✓ Area Expert rows: ${count}`);
+
+    const counts = await listings.getAreaExpertListingCounts();
+    console.log(`  → Listing counts (in render order): [${counts.join(', ')}]`);
+
+    const sortedDesc = [...counts].sort((a, b) => b - a);
+    expect(counts, 'Area Expert rows should be sorted by listing count DESC')
+      .toEqual(sortedDesc);
+
+    console.log('✅ TC-34 — Area Expert: 5 rows, sorted by listings DESC.');
+  });
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // TC-35: Internal-links section title + clickable links
+  // ══════════════════════════════════════════════════════════════════════════
+  test('TC-35: Internal links section title + clickable links', async () => {
+    await listings.internalLinksTitle.scrollIntoViewIfNeeded().catch(() => {});
+    await expect(listings.internalLinksTitle, 'Internal links title should be visible')
+      .toBeVisible({ timeout: 15000 });
+
+    const titleText = (await listings.internalLinksTitle.innerText()).trim();
+    expect(titleText.length, 'Internal links title should not be empty').toBeGreaterThan(0);
+    console.log(`  ✓ Internal links section title: "${titleText}"`);
+
+    const anchors = listings.internalLinksList.locator('a');
+    const total = await anchors.count();
+    expect(total, 'Internal links section should expose at least one link').toBeGreaterThan(0);
+    console.log(`  → Found ${total} internal link(s).`);
+
+    let clickable = 0;
+    for (let i = 0; i < total; i++) {
+      const a = anchors.nth(i);
+      const href = (await a.getAttribute('href')) || '';
+      const enabled = await a.isEnabled().catch(() => false);
+      if (href.trim() && enabled) clickable++;
+    }
+
+    expect(clickable, 'All internal links should have href and be enabled').toBe(total);
+    console.log(`✅ TC-35 — internal links section verified (${clickable}/${total} clickable).`);
   });
 });
