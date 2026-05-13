@@ -31,6 +31,12 @@
  *   TC-25: Filter by Bedroom
  *   TC-26: Filter by Bathroom
  *   TC-27: Filter by Parking
+ *   TC-28: Country Filter - Select Countries One by One
+ *   TC-29: Skipped (as requested)
+ *   TC-30: Sort Dropdown Values Verification
+ *   TC-31: Switch Between List and Grid View
+ *   TC-32: Verify B&S Advertisement Block
+ *   TC-33: Verify Pagination (Next and Previous)
  */
 
 require('dotenv').config();

@@ -227,6 +227,64 @@ const LOCATORS = {
   sbRoleSelect:         (roleName) => `//*[@id="sidebardata"]/div/ul/div[2]/div[1]/div/ul/li[.//*[contains(normalize-space(.),"${roleName}")]]/a[1]`,
   sbRoleAddProperty:    (roleName) => `//*[@id="sidebardata"]/div/ul/div[2]/div[1]/div/ul/li[.//*[contains(normalize-space(.),"${roleName}")]]/a[2]`,
   sbRoleCrm:            (roleName) => `//*[@id="sidebardata"]/div/ul/div[2]/div[1]/div/ul/li[.//*[contains(normalize-space(.),"${roleName}")]]/a[3]`,
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Property Detail Page
+  // ─────────────────────────────────────────────────────────────────────────
+  pdMediaTab: '//*[@id="img-tap"]',
+  pdGalleryList: '//*[@id="main-gallary-image"]/div/div/div[2]/div/div/div',
+  pdGalleryCounter: '//*[@id="image-slider"]/div[2]/div',
+  pdGalleryNext: '//*[@id="main-gallary-image"]/button[2]/i',
+
+  pdPropertyName: '//*[@id="vacancyView"]/div/div[1]/div[1]/div/div[1]/div[2]/div[1]/h4/span',
+  pdStatusTag: '//*[@id="vacancyView"]/div/div[1]/div[1]/div/div[1]/div[2]/div[1]/span',
+  pdTagline: '//*[@id="vacancyView"]/div/div[1]/div[1]/div/div[1]/div[2]/div[2]/span[1]',
+  pdPrice: '//*[@id="vacancyView"]/div/div[1]/div[1]/div/div[1]/div[2]/div[3]/span',
+  pdPostedDateTime: '//*[@id="vacancyView"]/div/div[1]/div[1]/div/div[1]/div[2]/div[2]/span[2]',
+
+  pdSpecifications: '//*[@id="vacancyView"]/div/div[1]/div[1]/div/div[2]/div/div',
+  pdDetailsSection: '//*[@id="vacancyView"]/div/div[1]/div[1]/div/div[3]',
+  pdMapAddressSection: '//*[@id="vacancyView"]/div/div[1]/div[1]/div/div[4]',
+  pdFacilitiesSection: '//*[@id="vacancyView"]/div/div[1]/div[1]/div/div[5]',
+  pdDescriptionSection: '//*[@id="vacancyView"]/div/div[1]/div[1]/div/div[6]',
+  pdRepaymentCalculatorSection: '//*[@id="vacancyView"]/div/div[1]/div[1]/div/div[7]',
+
+  pdProfileSection: '//*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[1]/div[2]',
+  pdVerifiedAgentTag: '//*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[1]/div[2]/div[2]/span',
+  pdOwnerTag: '//*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[1]/div[1]/div[2]/span',
+  pdSendProposalLink: '//*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[3]/div[2]/ul/li/a',
+
+  pdSendEnquiryButton: '//*[@id="vacancyView"]//button[contains(translate(normalize-space(.), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "send enquiry") or contains(translate(normalize-space(.), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "send inquiry")] | //*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[1]/div[3]/button',
+  pdWhatsappCta: '//*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[1]/div[3]/div[1]/span/span',
+  pdWhatsappCtaContainer: '//*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[1]/div[3]/div[1]/span',
+  pdWhatsappCtaRow: '//*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[1]/div[3]/div[1]',
+  pdWhatsappModal: '//*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[1]/div[3]/div[2]/div/div/div',
+  pdWhatsappSendButton: '//*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[1]/div[3]/div[2]/div/div/div/form/div/div[3]/div/button',
+  pdWhatsappShareLink: '//*[@id="vacancyView"]//a[contains(@href, "whatsapp") or contains(@href, "wa.me")]',
+  pdShareSection: '//*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[2]',
+  pdManageSection: '//*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[3]',
+
+  pdAddToFavorites: '//*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[3]/div[2]/div[2]/span',
+  pdPromoteButton: '//*[@id="vacancyView"]/div/div[1]/div[2]/div[1]/div/div[3]/div[2]/div[3]/div[1]/button',
+
+  pdPromoteModal: '//*[starts-with(@id, "bumpAdDetailModelCreateListing")]/div/div',
+  pdPromotePlans: '//*[starts-with(@id, "bumpAdDetailModelCreateListing")]/div/div/div[2]/div[2]',
+  pdPromoteClose: '//*[starts-with(@id, "bumpAdDetailModelCreateListing")]/div/div/div[1]/button',
+  pdWhatsIncluded: '//*[starts-with(@id, "bumpAdDetailModelCreateListing")]/div/div/div[2]/div[3]',
+  pdPromoteNow: '//*[starts-with(@id, "bumpAdDetailModelCreateListing")]/div/div/div[2]/button',
+  pdBuyCredits: '//*[starts-with(@id, "bumpAdDetailModelCreateListing")]/div/div/div[2]/a',
+  pdCreditsAvailable: '//*[starts-with(@id, "bumpAdDetailModelCreateListing")]/div/div/div[2]/div[1]',
+
+  pdFeaturedIcon: '//*[@id="vacancyView"]/div/div[1]/div[1]/div/div[1]/div[1]/div[4]/span',
+  pdMainMedia: '//*[@id="main-gallary-image"]//img | //*[@id="main-gallary-image"]//video',
+  pdEnquiryModal: '//*[starts-with(@id, "inquiryModel")]/div/div/div',
+  pdEnquirySubmit: '//*[starts-with(@id, "inquiryModel")]/div/div/div/span/form/div/div[3]/div[2]/button',
+  pdEnquirySuccessTitle: '//*[@id="vacancyView"]//h4[contains(translate(normalize-space(.), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "your enquiry has been sent successfully") or contains(translate(normalize-space(.), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "your inquiry has been sent successfully")]',
+  pdEnquirySuccessClose: '//*[@id="vacancyView"]//h4[contains(translate(normalize-space(.), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "your enquiry has been sent successfully") or contains(translate(normalize-space(.), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "your inquiry has been sent successfully")]/ancestor::div[contains(@class, "modal-content")]//button[contains(@class, "close") or @aria-label="Close"] | //*[@id="vacancyView"]//h4[contains(translate(normalize-space(.), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "your enquiry has been sent successfully") or contains(translate(normalize-space(.), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "your inquiry has been sent successfully")]/ancestor::div[contains(@class, "modal-content")]//img[@alt="Close"]/ancestor::button[1]',
+  pdActiveDialogClose: '//*[@id="vacancyView"]//dialog//button[normalize-space(.)="Close" or @aria-label="Close" or .//img[@alt="Close"]]',
+  pdGalleryImages: '#main-gallary-image img',
+  pdGalleryThumbImages: '//*[@id="image-slider"]//img',
+  pdVisibleGalleryThumbImages: '#image-slider img:visible',
 };
 
 module.exports = { LOCATORS };
